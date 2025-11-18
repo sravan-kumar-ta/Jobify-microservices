@@ -81,14 +81,26 @@ const { useUser, useLogin, useRegister, useLogout } = configureAuth({
 });
 
 const getUser = async () => {
-   const response = await axiosInstance.get("auth/user/");
-   return response.data;
+  try {
+    const response = await axiosInstance.get("auth/user/");
+    return response.data;
+  } catch (error) {
+    if (error.response?.status === 401) {
+      console.log("User is not authenticated!");
+      window.location.href = "/login";
+      throw new Error("Unauthorized");
+    }
+
+    throw error;
+  }
 };
+
 
 const useGetUserQuery = () => {
    return useQuery({
       queryKey: ["user"],
       queryFn: getUser,
+      retry: false,
       staleTime: 5 * 60 * 1000,
    });
 };
