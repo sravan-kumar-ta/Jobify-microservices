@@ -65,8 +65,9 @@ db.sqlite3
 db.sqlite3-journal
 media
 **media
+**/migrations/*.pyc
 **/migrations/__pycache__/
-!**/migrations/__init__.py
+!**/migrations/*.py
 
 # Git
 .git
