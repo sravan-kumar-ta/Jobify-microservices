@@ -11,5 +11,5 @@ ROLE_CHOICES = (
 
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='admin')
     email = models.EmailField(unique=True)
