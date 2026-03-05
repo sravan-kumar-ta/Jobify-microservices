@@ -25,9 +25,9 @@ services:
     environment:
       - JWT_SIGNING_KEY=${JWT_SIGNING_KEY}
       - DATABASE_URL=${AUTH_SERVICE_DB_URL}
-      - DEBUG=True
-      - ALLOWED_HOSTS=localhost,${HOST_IP}
-      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://${HOST_IP}
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
     volumes:
       - static_data:/app/staticfiles
     depends_on:
@@ -49,9 +49,9 @@ services:
     environment:
       - JWT_SIGNING_KEY=${JWT_SIGNING_KEY}
       - DATABASE_URL=${COMPANY_SERVICE_DB_URL}
-      - DEBUG=True
-      - ALLOWED_HOSTS=localhost,${HOST_IP}
-      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://${HOST_IP}
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
     volumes:
       - static_data:/app/staticfiles
       - media_data:/app/media 
@@ -74,9 +74,9 @@ services:
     environment:
       - JWT_SIGNING_KEY=${JWT_SIGNING_KEY}
       - DATABASE_URL=${SEEKER_SERVICE_DB_URL}
-      - DEBUG=True
-      - ALLOWED_HOSTS=localhost,${HOST_IP}
-      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://${HOST_IP}
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
     volumes:
       - static_data:/app/staticfiles
     depends_on:
@@ -99,9 +99,9 @@ services:
       - REDIS_URL=redis://redis:6379
       - JWT_SIGNING_KEY=${JWT_SIGNING_KEY}
       - DATABASE_URL=${CHAT_SERVICE_DB_URL}
-      - DEBUG=True
-      - ALLOWED_HOSTS=localhost,${HOST_IP}
-      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://${HOST_IP}
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
     volumes:
       - static_data:/app/staticfiles
     depends_on:
