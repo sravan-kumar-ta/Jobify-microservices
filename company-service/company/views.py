@@ -48,7 +48,7 @@ class JobViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, IsCompanyOrAdmin]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     search_fields = ['title', 'company__location']
-    filterset_fields = ['employment_type', 'salary']
+    filterset_fields = ['salary']
     ordering_fields = ['salary', 'date_posted']
     ordering = ['-date_posted']
     pagination_class = JobsListPagination

@@ -8,7 +8,7 @@ class CompanyAdmin(admin.ModelAdmin):
 
 
 class JobAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'company', 'employment_type', 'vacancy')
+    list_display = ('id', 'title', 'company', 'experience', 'salary')
     list_filter = ('company',)
 
 

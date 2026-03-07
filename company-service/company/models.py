@@ -32,19 +32,8 @@ class Job(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='jobs')
     salary = models.PositiveIntegerField(null=True)
     date_posted = models.DateTimeField(auto_now_add=True)
-    last_date_to_apply = models.DateField(null=True)
-    vacancy = models.PositiveIntegerField(default=1)
-    employment_type = models.CharField(
-        max_length=50,
-        choices=[
-            ('Full-time', 'Full-time'),
-            ('Part-time', 'Part-time'),
-            ('Contract', 'Contract'),
-            ('Freelance', 'Freelance'),
-            ('Internship', 'Internship'),
-        ],
-        default='Full-time'
-    )
+    experience = models.PositiveIntegerField(default=0)  # in years
+    skills = models.CharField(max_length=255, help_text="Comma-separated list of required skills")
 
     def __str__(self):
         return f"{self.title} at {self.company.title}"
