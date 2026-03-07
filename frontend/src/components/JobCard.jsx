@@ -3,7 +3,9 @@ import { FaRegBuilding } from "react-icons/fa";
 import { MdCalendarMonth } from "react-icons/md";
 import { GiMoneyStack } from "react-icons/gi";
 import { FaLocationDot } from "react-icons/fa6";
+import { SiHyperskill } from "react-icons/si";
 import { Link } from "react-router-dom";
+import { NumericFormat } from "react-number-format";
 
 const JobCard = ({ btn_text = "Apply", job = null }) => {
    const excerpt = (text, length) => {
@@ -31,7 +33,19 @@ const JobCard = ({ btn_text = "Apply", job = null }) => {
 
          <div className="flex items-center ml-4">
             <GiMoneyStack className="text-gray-700 mr-1" />
-            <p className="text-gray-500">{job.salary || "Not disclosed"}</p>
+            {/* <p className="text-gray-500">{job.salary || "Not disclosed"} LPA</p> */}
+            {job.salary ? (
+               <NumericFormat
+                  value={job.salary}
+                  thousandSeparator={true}
+                  prefix={"₹ "}
+                  suffix={" LPA"}
+                  displayType={"text"}
+                  className="text-gray-500"
+               />
+            ) : (
+               "Not disclosed"
+            )}
          </div>
          <div className="flex items-center ml-4">
             <FaLocationDot className="text-gray-600 mr-1" />
@@ -39,9 +53,15 @@ const JobCard = ({ btn_text = "Apply", job = null }) => {
          </div>
 
          <div className="flex items-center ml-4 mb-2">
+            <SiHyperskill className="text-gray-700 mr-1" />
+            <p className="text-gray-500">
+               {job.skills.slice(0, 20) || "Not disclosed"}, etc...
+            </p>
+         </div>
+         <div className="flex items-center ml-4 mb-2">
             <MdCalendarMonth className="text-gray-700 mr-1" />
             <p className="text-gray-500">
-               {job.last_date_to_apply || "Not disclosed"}
+               Minimum {job.experience || "Not disclosed"} years.
             </p>
          </div>
          <hr />
@@ -51,7 +71,7 @@ const JobCard = ({ btn_text = "Apply", job = null }) => {
                {excerpt(job.description, 20)}
                <a
                   href={btnLink}
-                  onClick={(e) => e.preventDefault()}
+                  // onClick={(e) => e.preventDefault()}
                   className="text-blue-600 hover:text-blue-800"
                >
                   {" "}

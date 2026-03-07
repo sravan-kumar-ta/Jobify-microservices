@@ -37,12 +37,28 @@ const companyFormValidationSchema = Yup.object().shape({
 });
 
 const JobFormValidationSchema = Yup.object().shape({
-   title: Yup.string().required("Title is required."),
-   salary: Yup.number().notRequired(),
-   vacancy: Yup.number().required("Vacancy is required."),
+   title: Yup.string()
+      .trim()
+      .min(3, "Title is too short")
+      .required("Title is required."),
+   salary: Yup.number()
+      .typeError("Salary must be a number")
+      .positive("Salary must be a positive number")
+      .nullable(),
+   experience: Yup.number()
+      .typeError("exp. must be a number of years")
+      .min(0, "Experience cannot be negative")
+      .default(0)
+      .nullable()
+      .transform((value, originalValue) => (originalValue === "" ? 0 : value)),
+   skills: Yup.string()
+      .required("Please list skills separated by commas (e.g. Python, React).")
+      .test(
+         "is-comma-separated",
+         "Please use commas to separate skills",
+         (val) => (val ? val.includes(",") || !val.trim().includes(" ") : true),
+      ),
    description: Yup.string().required("Description is required."),
-   employment_type: Yup.string().required("Employment type is required."),
-   last_date_to_apply: Yup.date().notRequired(),
 });
 
 const ExperienceValidationSchema = Yup.object().shape({
@@ -58,7 +74,7 @@ const ExperienceValidationSchema = Yup.object().shape({
                .required("End date is required for non-current experiences.")
                .min(
                   Yup.ref("start_date"),
-                  "End date must be after the start date."
+                  "End date must be after the start date.",
                ),
          otherwise: (schema) => schema.nullable(),
       }),

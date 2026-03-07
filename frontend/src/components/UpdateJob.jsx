@@ -11,10 +11,9 @@ const UpdateJob = ({ jobDetails, toggle }) => {
    const initialValues = {
       title: jobDetails.title,
       salary: jobDetails.salary,
-      vacancy: jobDetails.vacancy,
+      skills: jobDetails.skills,
       description: jobDetails.description,
-      employment_type: jobDetails.employment_type,
-      last_date_to_apply: jobDetails.last_date_to_apply,
+      experience: jobDetails.experience,
    };
 
    const handleSubmit = (values, { setSubmitting, setFieldError }) => {
@@ -75,46 +74,18 @@ const UpdateJob = ({ jobDetails, toggle }) => {
                </div>
                <div className="flex space-x-11 mt-2">
                   <InputField
-                     name="vacancy"
-                     label="Vacancy"
+                     name="skills"
+                     label="Required Skills"
                      touched={touched}
                      errors={errors}
                   />
-
-                  <div>
-                     <label
-                        htmlFor="employment_type"
-                        className="block text-gray-700 font-bold mb-2"
-                     >
-                        Role
-                     </label>
-                     <Field
-                        as="select"
-                        name="employment_type"
-                        id="employment_type"
-                        className={`block w-52 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 ${
-                           touched.employment_type && errors.employment_type
-                              ? "border-red-500"
-                              : touched.employment_type
-                              ? "border-green-500"
-                              : "border-gray-300"
-                        }`}
-                     >
-                        <option value="Full-time">Full time</option>
-                        <option value="Part-time">Part time</option>
-                        <option value="Contract">Contract</option>
-                        <option value="Freelance">Freelance</option>
-                        <option value="Internship">Internship</option>
-                     </Field>
-                  </div>
+                  <InputField
+                     name="experience"
+                     label="Experience"
+                     touched={touched}
+                     errors={errors}
+                  />
                </div>
-               <InputField
-                  name="last_date_to_apply"
-                  label="Last date to apply"
-                  touched={touched}
-                  errors={errors}
-                  type="date"
-               />
                <div className="mb-4">
                   <label
                      htmlFor="description"
@@ -144,7 +115,7 @@ const UpdateJob = ({ jobDetails, toggle }) => {
                </div>
 
                <div className="flex items-center justify-between">
-                  <SubmitButton isSubmitting={isSubmitting} text="Add Job" />
+                  <SubmitButton isSubmitting={isSubmitting} text="Update Job" />
                </div>
 
                <button

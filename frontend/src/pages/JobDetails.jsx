@@ -4,6 +4,7 @@ import { useFetchJobQuery } from "../services/companyService";
 import { useGetUserQuery } from "../services/authService";
 import UpdateJob from "../components/UpdateJob";
 import ApplyJob from "./JobSeeker/ApplyJob";
+import { NumericFormat } from "react-number-format";
 
 const JobDetails = () => {
    const { jobId } = useParams();
@@ -55,19 +56,26 @@ const JobDetails = () => {
                         {new Date(data.date_posted).toLocaleDateString()}
                      </p>
                      <p className="text-md text-gray-600 mb-2">
-                        <strong className="mr-2">Last Date to Apply:</strong>
-                        {new Date(data.last_date_to_apply).toLocaleDateString()}
+                        <strong className="mr-2">Salary:</strong>
+                        {data.salary ? (
+                           <NumericFormat
+                              value={data.salary}
+                              thousandSeparator={true}
+                              prefix={"₹ "}
+                              suffix={" LPA"}
+                              displayType={"text"}
+                              className="text-gray-500"
+                           />
+                        ) : (
+                           "Not disclosed"
+                        )}
                      </p>
                      <p className="text-md text-gray-600 mb-2">
-                        <strong className="mr-2">Employment Type:</strong>
-                        {data.employment_type}
+                        <strong className="mr-2">Experience:</strong> Minimum{" "}
+                        {data.experience} years.
                      </p>
                      <p className="text-md text-gray-600 mb-2">
-                        <strong className="mr-2">Salary:</strong> {data.salary}
-                     </p>
-                     <p className="text-md text-gray-600 mb-2">
-                        <strong className="mr-2">Vacancy:</strong>{" "}
-                        {data.vacancy}
+                        <strong className="mr-2">Skills:</strong> {data.skills}
                      </p>
                      <p className="text-md text-gray-600 mb-2">
                         <strong className="mr-2">Description:</strong>
