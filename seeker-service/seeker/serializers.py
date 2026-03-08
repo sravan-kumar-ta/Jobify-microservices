@@ -1,14 +1,9 @@
 from datetime import datetime
-
 from rest_framework import serializers
-
-# from account.serializers import UserSerializer
-from seeker.models import SeekerProfile, Resume, Experience
+from seeker.models import Education, SeekerProfile, Resume, Experience, Skills
 
 
 class SeekerProfileSerializer(serializers.ModelSerializer):
-    # user = UserSerializer(required=False)
-
     class Meta:
         model = SeekerProfile
         fields = "__all__"
@@ -57,5 +52,30 @@ class ExperienceSerializer(serializers.ModelSerializer):
         read_only_fields = ['seeker']
 
     def create(self, validated_data):
-        validated_data['seeker'] = SeekerProfile.objects.get(user_id=self.context['request'].user.id)
+        validated_data['seeker'] = SeekerProfile.objects.get(
+            user_id=self.context['request'].user.id)
+        return super().create(validated_data)
+
+
+class SkillsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skills
+        fields = "__all__"
+        read_only_fields = ['seeker']
+
+    def create(self, validated_data):
+        validated_data['seeker'] = SeekerProfile.objects.get(
+            user_id=self.context['request'].user.id)
+        return super().create(validated_data)
+
+
+class EducationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Education
+        fields = "__all__"
+        read_only_fields = ['seeker']
+
+    def create(self, validated_data):
+        validated_data['seeker'] = SeekerProfile.objects.get(
+            user_id=self.context['request'].user.id)
         return super().create(validated_data)

@@ -31,3 +31,30 @@ class Experience(models.Model):
 
     def __str__(self):
         return f"{self.seeker.user.get_full_name()} | {self.job_title} | {self.company}"
+
+
+class Skills(models.Model):
+    seeker = models.OneToOneField(SeekerProfile, on_delete=models.CASCADE, related_name="skills")
+    # Recommended: Stores as ["python", "react", "js"]
+    skills = models.JSONField(default=list, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.seeker.user_id} | Skills"
+
+
+class Education(models.Model):
+    seeker = models.ForeignKey(SeekerProfile, on_delete=models.CASCADE)
+    degree = models.CharField(max_length=150)
+    institution = models.CharField(max_length=255)
+
+    start_year = models.CharField(max_length=150)
+    end_year = models.CharField(max_length=150, null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-start_year"]
+
+    def __str__(self):
+        return f"{self.degree} - {self.institution}"
