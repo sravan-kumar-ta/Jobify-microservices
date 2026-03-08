@@ -88,6 +88,17 @@ const fetchFilteredJobs = async (params) => {
    return response.data;
 };
 
+const createSkills = async (data) => {
+   const response = await axiosInstance.post("seeker/skills/", data);
+   return response.data;
+};
+
+const fetchSkills = async () => {
+   console.log("Fetching skills...");
+   const response = await axiosInstance.get("seeker/skills/");
+   return response.data;
+}
+
 // --------------------
 // Custom Hooks
 // --------------------
@@ -288,6 +299,29 @@ const useFetchFilteredJobsQuery = (params) => {
    });
 };
 
+const useCreateSkillsMutation = () => {
+   const queryClient = useQueryClient();
+
+   return useMutation({
+      mutationFn: createSkills,
+      onSuccess: (data) => {
+         // console.log("Skills created successfully:", data);
+         queryClient.setQueryData(["skills"], data);
+      },
+      onError: (err) => {
+         console.log(err);
+      },
+   });
+}
+
+const useFetchSkillsQuery = () => {
+   return useQuery({
+      queryKey: ["skills"],
+      queryFn: fetchSkills,
+      staleTime: 5 * 60 * 1000,
+   });
+}
+
 export {
    useFetchJobsQuery,
    useFetchProfileQuery,
@@ -302,4 +336,6 @@ export {
    useFetchApplicationsQuery,
    useCreateApplicationMutation,
    useFetchFilteredJobsQuery,
+   useCreateSkillsMutation,
+   useFetchSkillsQuery,
 };

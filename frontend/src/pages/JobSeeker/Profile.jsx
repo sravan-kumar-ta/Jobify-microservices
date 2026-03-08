@@ -5,6 +5,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { ImMail4 } from "react-icons/im";
 import { MdWork } from "react-icons/md";
+import { SiHyperskill } from "react-icons/si";
 import AddResume from "../../components/jobSeeker/AddResume";
 import Resume from "../../components/jobSeeker/Resume";
 import Experience from "../../components/jobSeeker/Experience";
@@ -13,6 +14,7 @@ import {
    useFetchExperiencesQuery,
    useFetchProfileQuery,
    useFetchResumesQuery,
+   useFetchSkillsQuery,
 } from "../../services/seekerService";
 import ExperienceSkeleton from "../../components/jobSeeker/skeletons/ExperienceSkeleton";
 import ResumeSkeleton from "../../components/jobSeeker/skeletons/ResumeSkeleton";
@@ -22,8 +24,11 @@ import { useGetUserQuery } from "../../services/authService";
 import { BiEditAlt } from "react-icons/bi";
 import ProfileImageForm from "../../components/jobSeeker/ProfileImageForm";
 import ProfileBioForm from "../../components/jobSeeker/ProfileBioForm";
+import AddSkills from "../../components/jobSeeker/AddSkills";
+import SkillList from "../../components/jobSeeker/SkillList";
 
 const Profile = () => {
+   const [isAddingSkills, setIsAddingSkills] = useState(false);
    const [isAddingResume, setIsAddingResume] = useState(false);
    const [isAddingExp, setIsAddingExp] = useState(false);
    const [isUpdatingExp, setIsUpdatingExp] = useState(false);
@@ -37,9 +42,18 @@ const Profile = () => {
       useFetchProfileQuery();
    const { data: experiences, isLoading: isLoadingExp } =
       useFetchExperiencesQuery();
+   const {
+      data: skills,
+      isLoading: isLoadingSkills,
+      isError,
+   } = useFetchSkillsQuery();
 
    const toggleAdd = () => {
       setIsAddingResume((prev) => !prev);
+   };
+
+   const toggleSkills = () => {
+      setIsAddingSkills((prev) => !prev);
    };
 
    const closeExpForm = () => {
@@ -175,6 +189,55 @@ const Profile = () => {
                      </Link>
                   </div>
                </div>
+            </div>
+
+            {/* User Skills Section */}
+            <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 mb-6 relative">
+               <div className="flex justify-between items-center mb-4">
+                  <div className="flex">
+                     <SiHyperskill className="text-amber-600 text-3xl mr-4" />
+                     <h2 className="text-2xl font-semibold text-gray-800">
+                        {isAddingSkills ? "Add Skills" : "Skills"}
+                     </h2>
+                  </div>
+                  {isAddingSkills ? (
+                     <IoMdCloseCircleOutline
+                        onClick={toggleSkills}
+                        className="text-red-600 cursor-pointer transition-all duration-300"
+                        size={21}
+                     />
+                  ) : (
+                     <button
+                        onClick={toggleSkills}
+                        className="flex items-center border border-blue-600 text-blue-600 text-sm font-semibold py-1 px-4 rounded hover:bg-blue-600 hover:text-white transition-all duration-300"
+                     >
+                        Add Skills
+                        <IoAddCircleOutline className="ml-1" />
+                     </button>
+                  )}
+               </div>
+
+               {isAddingSkills ? (
+                  <AddSkills
+                     skills={skills}
+                     setIsAddingSkills={setIsAddingSkills}
+                  />
+               ) : isLoadingSkills ? (
+                  <div className="grid grid-cols-3 lg:grid-cols-5 md:grid-cols-4 gap-x-4 gap-y-2">
+                     {Array.from({ length: 8 }).map((_, index) => (
+                        <Skeleton
+                           key={index}
+                           width={90}
+                           height={20}
+                           className="w-full"
+                        />
+                     ))}
+                  </div>
+               ) : isError ? (
+                  <p className="text-amber-600">No skills added yet.</p>
+               ) : (
+                  <SkillList skills={skills} />
+               )}
             </div>
 
             {/* Resumes and Experience Sections */}
