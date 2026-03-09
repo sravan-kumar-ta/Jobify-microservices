@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { techSkills } from "../../utils/TechSkills";
+import { techSkills } from "../../utils/techSkills";
 import { useCreateSkillsMutation } from "../../services/seekerService";
 
 const AddSkills = ({ skills, setIsAddingSkills }) => {

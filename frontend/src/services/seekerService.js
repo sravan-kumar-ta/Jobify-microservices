@@ -23,7 +23,7 @@ const updateProfile = async (data) => {
          headers: {
             "Content-Type": "multipart/form-data",
          },
-      }
+      },
    );
    return response.data;
 };
@@ -65,7 +65,7 @@ const deleteExperience = async (id) => {
 const updateExperience = async (data) => {
    const response = await axiosInstance.patch(
       `seeker/experience/${data.id}/`,
-      data
+      data,
    );
    return response.data;
 };
@@ -94,10 +94,29 @@ const createSkills = async (data) => {
 };
 
 const fetchSkills = async () => {
-   console.log("Fetching skills...");
    const response = await axiosInstance.get("seeker/skills/");
    return response.data;
-}
+};
+
+const createEducation = async (data) => {
+   const response = await axiosInstance.post("seeker/education/", data);
+   return response.data;
+};
+
+const fetchEducation = async () => {
+   const response = await axiosInstance.get("seeker/education/");
+   return response.data;
+};
+
+const updateEducation = async ({ id, data }) => {
+   const response = await axiosInstance.patch(`seeker/education/${id}/`, data);
+   return response.data;
+};
+
+const deleteEducation = async (id) => {
+   const response = await axiosInstance.delete(`seeker/education/${id}/`);
+   return response.data;
+};
 
 // --------------------
 // Custom Hooks
@@ -174,7 +193,7 @@ const useDeleteResumeMutation = () => {
          await queryClient.cancelQueries({ queryKey: ["resumes"] });
          const previousResumes = queryClient.getQueryData(["resumes"]);
          queryClient.setQueryData(["resumes"], (oldResumes) =>
-            oldResumes.filter((resume) => resume.id !== resumeId)
+            oldResumes.filter((resume) => resume.id !== resumeId),
          );
 
          return { previousResumes };
@@ -226,7 +245,7 @@ const useDeleteExperienceMutation = () => {
          await queryClient.cancelQueries({ queryKey: ["experiences"] });
          const previousExps = queryClient.getQueryData(["experiences"]);
          queryClient.setQueryData(["experiences"], (oldExps) =>
-            oldExps.filter((exp) => exp.id !== expId)
+            oldExps.filter((exp) => exp.id !== expId),
          );
 
          return { previousExps };
@@ -252,8 +271,8 @@ const useUpdateExperienceMutation = () => {
 
          queryClient.setQueryData(["experiences"], (oldExps) =>
             oldExps.map((exp) =>
-               exp.id === updatedExp.id ? { ...exp, ...updatedExp } : exp
-            )
+               exp.id === updatedExp.id ? { ...exp, ...updatedExp } : exp,
+            ),
          );
 
          return { previousExps };
@@ -312,7 +331,7 @@ const useCreateSkillsMutation = () => {
          console.log(err);
       },
    });
-}
+};
 
 const useFetchSkillsQuery = () => {
    return useQuery({
@@ -320,7 +339,50 @@ const useFetchSkillsQuery = () => {
       queryFn: fetchSkills,
       staleTime: 5 * 60 * 1000,
    });
-}
+};
+
+const useFetchEducationQuery = () => {
+   return useQuery({
+      queryKey: ["education"],
+      queryFn: fetchEducation,
+      staleTime: 5 * 60 * 1000,
+   });
+};
+
+const useCreateEducationMutation = () => {
+   const queryClient = useQueryClient();
+
+   return useMutation({
+      mutationFn: createEducation,
+
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: ["education"] });
+      },
+   });
+};
+
+const useUpdateEducationMutation = () => {
+   const queryClient = useQueryClient();
+
+   return useMutation({
+      mutationFn: updateEducation,
+
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: ["education"] });
+      },
+   });
+};
+
+const useDeleteEducationMutation = () => {
+   const queryClient = useQueryClient();
+
+   return useMutation({
+      mutationFn: deleteEducation,
+      onSuccess: () => {
+         queryClient.invalidateQueries(["education"]);
+      },
+   });
+};
 
 export {
    useFetchJobsQuery,
@@ -338,4 +400,8 @@ export {
    useFetchFilteredJobsQuery,
    useCreateSkillsMutation,
    useFetchSkillsQuery,
+   useFetchEducationQuery,
+   useCreateEducationMutation,
+   useUpdateEducationMutation,
+   useDeleteEducationMutation,
 };

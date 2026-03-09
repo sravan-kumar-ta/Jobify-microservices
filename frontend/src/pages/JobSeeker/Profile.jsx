@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import avatarImg from "../../assets/avatar.jpg";
+import { useState } from "react";
 import { IoAddCircleOutline, IoDocumentText } from "react-icons/io5";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { FaUserCircle } from "react-icons/fa";
@@ -11,6 +12,7 @@ import Resume from "../../components/jobSeeker/Resume";
 import Experience from "../../components/jobSeeker/Experience";
 import ExperienceForm from "../../components/jobSeeker/ExperienceForm";
 import {
+   useFetchEducationQuery,
    useFetchExperiencesQuery,
    useFetchProfileQuery,
    useFetchResumesQuery,
@@ -26,6 +28,9 @@ import ProfileImageForm from "../../components/jobSeeker/ProfileImageForm";
 import ProfileBioForm from "../../components/jobSeeker/ProfileBioForm";
 import AddSkills from "../../components/jobSeeker/AddSkills";
 import SkillList from "../../components/jobSeeker/SkillList";
+import EducationList from "../../components/jobSeeker/EducationList";
+import EducationForm from "../../components/jobSeeker/EducationForm";
+import EducationSkeleton from "../../components/jobSeeker/skeletons/EducationSkeleton";
 
 const Profile = () => {
    const [isAddingSkills, setIsAddingSkills] = useState(false);
@@ -35,6 +40,8 @@ const Profile = () => {
    const [updationExp, setUpdationExp] = useState();
    const [isAddingPicture, setIsAddingPicture] = useState(false);
    const [isAddingBio, setIsAddingBio] = useState(false);
+   const [mode, setMode] = useState("list");
+   const [editing, setEditing] = useState(null);
 
    const { data: user, isLoading: isLoadingUser } = useGetUserQuery();
    const { data: resumes, isLoading: isLoadingResume } = useFetchResumesQuery();
@@ -47,6 +54,8 @@ const Profile = () => {
       isLoading: isLoadingSkills,
       isError,
    } = useFetchSkillsQuery();
+   const { data: educations, isLoading: isLoadingEdu } =
+      useFetchEducationQuery();
 
    const toggleAdd = () => {
       setIsAddingResume((prev) => !prev);
@@ -64,6 +73,22 @@ const Profile = () => {
    const setUpdation = (exp) => {
       setUpdationExp(exp);
       setIsUpdatingExp(true);
+   };
+
+   // Education section
+   const handleAdd = () => {
+      setEditing(null);
+      setMode("create");
+   };
+
+   const handleEdit = (item) => {
+      setEditing(item);
+      setMode("edit");
+   };
+
+   const handleSuccess = () => {
+      setMode("list");
+      setEditing(null);
    };
 
    return (
@@ -99,7 +124,7 @@ const Profile = () => {
                      <div className="relative">
                         <img
                            className="w-32 h-32 rounded-full my-auto"
-                           src="https://loremflickr.com/320/320/girl"
+                           src={avatarImg}
                            alt="Profile photo"
                         />
 
@@ -237,6 +262,36 @@ const Profile = () => {
                   <p className="text-amber-600">No skills added yet.</p>
                ) : (
                   <SkillList skills={skills} />
+               )}
+            </div>
+
+            {/* Education Section */}
+            <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 mb-6 relative">
+               {mode === "create" && (
+                  <EducationForm
+                     onCancel={() => setMode("list")}
+                     onSuccess={handleSuccess}
+                  />
+               )}
+
+               {mode === "edit" && (
+                  <EducationForm
+                     initial={editing}
+                     onCancel={() => setMode("list")}
+                     onSuccess={handleSuccess}
+                  />
+               )}
+
+               {isLoadingEdu ? (
+                  <EducationSkeleton />
+               ) : (
+                  mode === "list" && (
+                     <EducationList
+                        education={educations}
+                        onAdd={handleAdd}
+                        onEdit={handleEdit}
+                     />
+                  )
                )}
             </div>
 

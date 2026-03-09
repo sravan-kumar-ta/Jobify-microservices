@@ -1,4 +1,4 @@
-import { techSkills } from "../../utils/TechSkills";
+import { techSkills } from "../../utils/techSkills";
 
 const SkillList = ({ skills }) => {
    const initialValue = techSkills.filter((option) =>
