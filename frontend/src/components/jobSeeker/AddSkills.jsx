@@ -17,10 +17,9 @@ const AddSkills = ({ skills, setIsAddingSkills }) => {
    const handleSubmit = () => {
       const skillsForBackend = selectedSkills.map((skill) => skill.value);
       const payload = { skills: skillsForBackend };
-      // console.log("Sending to Django:", { skills: skillsForBackend });
+      
       createSkills.mutate(payload, {
          onSuccess: (data) => {
-            // console.log("Skills created successfully:", data);
             setIsAddingSkills(false);
          },
          onError: (err) => {

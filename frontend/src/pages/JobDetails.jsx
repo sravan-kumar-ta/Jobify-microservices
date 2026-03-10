@@ -5,6 +5,7 @@ import { useGetUserQuery } from "../services/authService";
 import UpdateJob from "../components/UpdateJob";
 import ApplyJob from "./JobSeeker/ApplyJob";
 import { NumericFormat } from "react-number-format";
+import { techSkills } from "../utils/techSkills";
 
 const JobDetails = () => {
    const { jobId } = useParams();
@@ -36,6 +37,16 @@ const JobDetails = () => {
    if (isError) {
       return <div>Error: {error.message}</div>;
    }
+
+   const getLabel = (skills) => {
+      return skills
+         .split(",")
+         .map(
+            (skill) =>
+               techSkills.find((t) => t.value === skill)?.label || skill,
+         )
+         .join(", ");
+   };
 
    return (
       <>
@@ -75,7 +86,8 @@ const JobDetails = () => {
                         {data.experience} years.
                      </p>
                      <p className="text-md text-gray-600 mb-2">
-                        <strong className="mr-2">Skills:</strong> {data.skills}
+                        <strong className="mr-2">Skills:</strong>{" "}
+                        {getLabel(data.skills)}
                      </p>
                      <p className="text-md text-gray-600 mb-2">
                         <strong className="mr-2">Description:</strong>

@@ -6,11 +6,22 @@ import { FaLocationDot } from "react-icons/fa6";
 import { SiHyperskill } from "react-icons/si";
 import { Link } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
+import { techSkills } from "../utils/techSkills";
 
 const JobCard = ({ btn_text = "Apply", job = null }) => {
    const excerpt = (text, length) => {
       if (text.length <= length) return text;
       return text.substring(0, length) + "...";
+   };
+
+   const getLabel = (skills) => {
+      return skills
+         .split(",")
+         .map(
+            (skill) =>
+               techSkills.find((t) => t.value === skill)?.label || skill,
+         )
+         .join(", ");
    };
 
    let btnLink = `/job/${job.id}`;
@@ -55,7 +66,8 @@ const JobCard = ({ btn_text = "Apply", job = null }) => {
          <div className="flex items-center ml-4 mb-2">
             <SiHyperskill className="text-gray-700 mr-1" />
             <p className="text-gray-500">
-               {job.skills.slice(0, 20) || "Not disclosed"}, etc...
+               {getLabel(job.skills).slice(0, 20) + "...etc." ||
+                  "Not disclosed"}
             </p>
          </div>
          <div className="flex items-center ml-4 mb-2">

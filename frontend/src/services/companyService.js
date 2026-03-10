@@ -35,6 +35,7 @@ const updateUserCompany = async (companyData) => {
 };
 
 const createJob = async (jobData) => {
+   console.log("Creating job with data:", jobData);
    const response = await axiosInstance.post("company/jobs/", jobData);
    return response.data;
 };

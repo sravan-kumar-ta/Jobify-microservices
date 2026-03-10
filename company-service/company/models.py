@@ -33,7 +33,7 @@ class Job(models.Model):
     salary = models.PositiveIntegerField(null=True)
     date_posted = models.DateTimeField(auto_now_add=True)
     experience = models.PositiveIntegerField(default=0)  # in years
-    skills = models.CharField(max_length=255, help_text="Comma-separated list of required skills")
+    skills = models.JSONField(default=list)
 
     def __str__(self):
         return f"{self.title} at {self.company.title}"

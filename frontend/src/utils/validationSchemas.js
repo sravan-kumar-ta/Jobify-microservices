@@ -51,13 +51,7 @@ const JobFormValidationSchema = Yup.object().shape({
       .default(0)
       .nullable()
       .transform((value, originalValue) => (originalValue === "" ? 0 : value)),
-   skills: Yup.string()
-      .required("Please list skills separated by commas (e.g. Python, React).")
-      .test(
-         "is-comma-separated",
-         "Please use commas to separate skills",
-         (val) => (val ? val.includes(",") || !val.trim().includes(" ") : true),
-      ),
+   skills: Yup.string().required("Please add skills for the job"),
    description: Yup.string().required("Description is required."),
 });
 
