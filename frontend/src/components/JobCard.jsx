@@ -1,105 +1,128 @@
 import React from "react";
-import { FaRegBuilding } from "react-icons/fa";
-import { MdCalendarMonth } from "react-icons/md";
-import { GiMoneyStack } from "react-icons/gi";
-import { FaLocationDot } from "react-icons/fa6";
-import { SiHyperskill } from "react-icons/si";
+import {
+   HiLocationMarker,
+   HiBriefcase,
+   HiCurrencyDollar,
+   HiClock,
+} from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
 import { techSkills } from "../utils/techSkills";
 
 const JobCard = ({ btn_text = "Apply", job = null }) => {
    const excerpt = (text, length) => {
+      if (!text) return "";
       if (text.length <= length) return text;
       return text.substring(0, length) + "...";
    };
 
-   const getLabel = (skills) => {
+   const getSkillsArray = (skills) => {
+      if (!skills) return [];
       return skills
          .split(",")
+         .map((skill) => skill.trim())
+         .filter(Boolean)
          .map(
             (skill) =>
                techSkills.find((t) => t.value === skill)?.label || skill,
-         )
-         .join(", ");
+         );
    };
 
-   let btnLink = `/job/${job.id}`;
+   const btnLink = `/job/${job.id}`;
+   const skillsArray = getSkillsArray(job.skills);
 
    return (
-      <div className="md:w-11/12 w-full mx-auto bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 relative">
-         <span className="text-gray-600 bg-gray-100 py-1 px-2 rounded-bl-lg absolute top-0 right-0">
-            {job.employment_type}
-         </span>
+      <div className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col gap-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 h-full">
+         {/* Employment Type Badge */}
+         <div className="flex items-start gap-3">
+            <div className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center flex-shrink-0">
+               <HiBriefcase className="w-5 h-5" />
+            </div>
 
-         <header className="p-4">
-            <h2 className="text-xl font-semibold text-gray-800">{job.title}</h2>
-         </header>
-         <hr />
-
-         <div className="flex items-center ml-4 mt-2">
-            <FaRegBuilding className="text-gray-700 mr-1" />
-            <p className="text-gray-600">{job.company.title}</p>
+            <div className="min-w-0 flex-1">
+               <h2 className="text-sm sm:text-base font-semibold text-slate-800 leading-snug line-clamp-2">
+                  {job.title}
+               </h2>
+               <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                  {job.company?.title || "Unknown Company"}
+               </p>
+            </div>
          </div>
 
-         <div className="flex items-center ml-4">
-            <GiMoneyStack className="text-gray-700 mr-1" />
-            {/* <p className="text-gray-500">{job.salary || "Not disclosed"} LPA</p> */}
-            {job.salary ? (
-               <NumericFormat
-                  value={job.salary}
-                  thousandSeparator={true}
-                  prefix={"₹ "}
-                  suffix={" LPA"}
-                  displayType={"text"}
-                  className="text-gray-500"
-               />
+         {/* Meta Info */}
+         <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-500">
+               <HiCurrencyDollar className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+               {job.salary ? (
+                  <NumericFormat
+                     value={job.salary}
+                     thousandSeparator={true}
+                     prefix={"₹ "}
+                     suffix={" LPA"}
+                     displayType={"text"}
+                     className="font-medium text-slate-700"
+                  />
+               ) : (
+                  <span className="text-slate-400">Not disclosed</span>
+               )}
+            </div>
+
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-500">
+               <HiLocationMarker className="w-4 h-4 text-rose-400 flex-shrink-0" />
+               <span>{job.company?.location || "Not disclosed"}</span>
+            </div>
+
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-500">
+               <HiClock className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+               <span>Minimum {job.experience || "Not disclosed"} years</span>
+            </div>
+         </div>
+
+         {/* Skills */}
+         <div className="flex flex-wrap gap-1.5">
+            {skillsArray.length > 0 ? (
+               skillsArray.slice(0, 4).map((skill) => (
+                  <span
+                     key={skill}
+                     className="text-xs font-medium px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 border border-slate-200"
+                  >
+                     {skill}
+                  </span>
+               ))
             ) : (
-               "Not disclosed"
+               <span className="text-xs text-slate-400">No skills listed</span>
+            )}
+
+            {skillsArray.length > 4 && (
+               <span className="text-xs font-medium px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100">
+                  +{skillsArray.length - 4} more
+               </span>
             )}
          </div>
-         <div className="flex items-center ml-4">
-            <FaLocationDot className="text-gray-600 mr-1" />
-            <p className="text-gray-600">{job.company.location}</p>
-         </div>
 
-         <div className="flex items-center ml-4 mb-2">
-            <SiHyperskill className="text-gray-700 mr-1" />
-            <p className="text-gray-500">
-               {getLabel(job.skills).slice(0, 20) + "...etc." ||
-                  "Not disclosed"}
-            </p>
-         </div>
-         <div className="flex items-center ml-4 mb-2">
-            <MdCalendarMonth className="text-gray-700 mr-1" />
-            <p className="text-gray-500">
-               Minimum {job.experience || "Not disclosed"} years.
-            </p>
-         </div>
-         <hr />
+         {/* Description */}
+         <p
+            className="text-xs sm:text-sm text-slate-500 leading-relaxed flex-1"
+            style={{
+               display: "-webkit-box",
+               WebkitLineClamp: 3,
+               WebkitBoxOrient: "vertical",
+               overflow: "hidden",
+            }}
+         >
+            {excerpt(job.description || "", 120)}
+         </p>
 
-         <section className="px-4 pb-4 mt-2">
-            <p className="text-gray-700">
-               {excerpt(job.description, 20)}
-               <a
-                  href={btnLink}
-                  // onClick={(e) => e.preventDefault()}
-                  className="text-blue-600 hover:text-blue-800"
-               >
-                  {" "}
-                  Read more...
-               </a>
-            </p>
-         </section>
-
-         <footer className="px-4 py-4 bg-gray-100 border-t border-gray-200 text-center">
+         {/* Footer CTA */}
+         <div className="pt-1 mt-auto">
             <Link
                to={btnLink}
-               className="bg-blue-600 text-white text-sm font-semibold py-2 px-5 rounded hover:bg-blue-700 transition-colors duration-300"
+               className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-sm font-semibold bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm shadow-indigo-200 transition-all"
             >
+               <HiBriefcase className="w-4 h-4" />
                {btn_text}
             </Link>
-         </footer>
+         </div>
       </div>
    );
 };

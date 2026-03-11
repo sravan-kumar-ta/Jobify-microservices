@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { IoIosSchool } from "react-icons/io";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { educationSchema } from "../../utils/zodValidation";
@@ -59,8 +58,14 @@ export default function EducationForm({ initial, onCancel, onSuccess }) {
    return (
       <>
          <div className="flex mb-2">
-            <IoIosSchool className="text-violet-600 text-3xl mr-4" />
-            <h2 className="text-2xl font-semibold text-gray-800">{title}</h2>
+            <div className="flex items-center gap-3">
+               <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 text-base">
+                  🎓
+               </div>
+               <h2 className="text-sm sm:text-base font-semibold tracking-wide text-slate-800">
+                  {title}
+               </h2>
+            </div>
          </div>
          <form
             onSubmit={handleSubmit(onSubmit)}
@@ -152,7 +157,7 @@ export default function EducationForm({ initial, onCancel, onSuccess }) {
                <button
                   type="button"
                   onClick={onCancel}
-                  className="border px-4 py-2 rounded-lg text-sm"
+                  className="border border-red-400 text-red-500 font-medium hover:bg-red-100 px-3 py-1 rounded-lg text-sm"
                >
                   Cancel
                </button>

@@ -19,7 +19,7 @@ const AddSkills = ({ skills, setIsAddingSkills }) => {
       const payload = { skills: skillsForBackend };
       
       createSkills.mutate(payload, {
-         onSuccess: (data) => {
+         onSuccess: () => {
             setIsAddingSkills(false);
          },
          onError: (err) => {
@@ -41,10 +41,10 @@ const AddSkills = ({ skills, setIsAddingSkills }) => {
          />
          <div className="flex justify-end">
             <button
-               className="px-6 mt-3 bg-indigo-500 text-sm text-white py-1 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center justify-center"
+               className="px-4 mt-3 bg-indigo-500 text-sm text-white py-1 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center justify-center"
                onClick={handleSubmit}
             >
-               Add
+               ✓ Save
             </button>
          </div>
       </div>

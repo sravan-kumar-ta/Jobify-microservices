@@ -1,5 +1,30 @@
 import { z } from "zod";
 
+export const registerSchema = z
+   .object({
+      first_name: z.string().trim().min(1, "First name is required"),
+      last_name: z.string().trim().min(1, "Last name is required"),
+      username: z
+         .string()
+         .trim()
+         .min(3, "Username must be at least 3 characters"),
+      email: z.string().trim().email("Invalid email address"),
+      role: z.enum(["job_seeker", "company"], {
+         errorMap: () => ({ message: "Role is required" }),
+      }),
+      password: z.string().min(6, "Password must be at least 6 characters"),
+      confirmPassword: z.string().min(1, "Confirm Password is required"),
+   })
+   .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords must match",
+      path: ["confirmPassword"],
+   });
+
+export const loginSchema = z.object({
+   username: z.string().trim().min(1, "Username is required"),
+   password: z.string().min(3, "Password must be at least 3 characters"),
+});
+
 export const educationSchema = z
    .object({
       degree: z.string().min(1, "Degree is required"),
