@@ -18,6 +18,11 @@ const Experience = ({ exp, setUpdation }) => {
    };
 
    const handleDelete = () => {
+      const confirmed = window.confirm(
+         "Are you sure you want to delete this experience?",
+      );
+
+      if (!confirmed) return;
       deleteExperienceMutation.mutate(exp.id);
    };
 

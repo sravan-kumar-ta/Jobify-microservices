@@ -9,15 +9,21 @@ import {
 import SubmitButton from "../SubmitButton";
 
 export default function EducationForm({ initial, onCancel, onSuccess }) {
-   const { mutate: createEducation } = useCreateEducationMutation();
-   const { mutate: updateEducation } = useUpdateEducationMutation();
+   const { mutate: createEducation, isPending: isCreating } =
+      useCreateEducationMutation();
+
+   const { mutate: updateEducation, isPending: isUpdating } =
+      useUpdateEducationMutation();
+
    const title = initial ? "Update Education" : "Add Education";
 
-   initial = initial
+   const normalizedInitial = initial
       ? {
            ...initial,
-           currently_studying:
-              initial.end_year == null || initial.end_year == "" ? true : false,
+           is_current:
+              initial.end_year == null || initial.end_year === ""
+                 ? true
+                 : (initial.is_current ?? false),
         }
       : null;
 
@@ -26,30 +32,30 @@ export default function EducationForm({ initial, onCancel, onSuccess }) {
       handleSubmit,
       watch,
       setValue,
-      formState: { errors, isSubmitting },
+      formState: { errors },
    } = useForm({
       resolver: zodResolver(educationSchema),
-      defaultValues: initial || {
+      defaultValues: normalizedInitial || {
          degree: "",
          institution: "",
          start_year: "",
          end_year: "",
-         currently_studying: false,
+         is_current: false,
       },
    });
 
-   const currentlyStudying = watch("currently_studying");
+   const is_current = watch("is_current");
+   const isSubmitting = isCreating || isUpdating;
 
    useEffect(() => {
-      if (currentlyStudying) {
+      if (is_current) {
          setValue("end_year", "");
       }
-   }, [currentlyStudying, setValue]);
+   }, [is_current, setValue]);
 
    const onSubmit = (data) => {
-      console.log("Form Data:", data);
-      if (initial?.id) {
-         updateEducation({ id: initial.id, data }, { onSuccess });
+      if (normalizedInitial?.id) {
+         updateEducation({ id: normalizedInitial.id, data }, { onSuccess });
       } else {
          createEducation(data, { onSuccess });
       }
@@ -67,18 +73,18 @@ export default function EducationForm({ initial, onCancel, onSuccess }) {
                </h2>
             </div>
          </div>
+
          <form
             onSubmit={handleSubmit(onSubmit)}
             className="bg-white border rounded-xl p-5 space-y-4"
          >
             <div>
                <label className="text-sm">Degree</label>
-
                <input
                   {...register("degree")}
-                  className="w-full border rounded px-3 py-2 text-sm"
+                  disabled={isSubmitting}
+                  className="w-full border rounded px-3 py-2 text-sm disabled:bg-slate-100 disabled:cursor-not-allowed"
                />
-
                {errors.degree && (
                   <p className="text-xs text-red-500 mt-1">
                      {errors.degree.message}
@@ -88,12 +94,11 @@ export default function EducationForm({ initial, onCancel, onSuccess }) {
 
             <div>
                <label className="text-sm">Institution</label>
-
                <input
                   {...register("institution")}
-                  className="w-full border rounded px-3 py-2 text-sm"
+                  disabled={isSubmitting}
+                  className="w-full border rounded px-3 py-2 text-sm disabled:bg-slate-100 disabled:cursor-not-allowed"
                />
-
                {errors.institution && (
                   <p className="text-xs text-red-500 mt-1">
                      {errors.institution.message}
@@ -104,13 +109,12 @@ export default function EducationForm({ initial, onCancel, onSuccess }) {
             <div className="grid grid-cols-2 gap-3">
                <div>
                   <label className="text-sm">Start Date</label>
-
                   <input
                      type="month"
                      {...register("start_year")}
-                     className="w-full border rounded px-3 py-2 text-sm"
+                     disabled={isSubmitting}
+                     className="w-full border rounded px-3 py-2 text-sm disabled:bg-slate-100 disabled:cursor-not-allowed"
                   />
-
                   {errors.start_year && (
                      <p className="text-xs text-red-500 mt-1">
                         {errors.start_year.message}
@@ -120,14 +124,12 @@ export default function EducationForm({ initial, onCancel, onSuccess }) {
 
                <div>
                   <label className="text-sm">End Date</label>
-
                   <input
                      type="month"
-                     disabled={currentlyStudying}
+                     disabled={is_current || isSubmitting}
                      {...register("end_year")}
-                     className="w-full border rounded px-3 py-2 text-sm"
+                     className="w-full border rounded px-3 py-2 text-sm disabled:bg-slate-100 disabled:cursor-not-allowed"
                   />
-
                   {errors.end_year && (
                      <p className="text-xs text-red-500 mt-1">
                         {errors.end_year.message}
@@ -139,9 +141,10 @@ export default function EducationForm({ initial, onCancel, onSuccess }) {
             <div className="flex items-center gap-2">
                <input
                   type="checkbox"
-                  {...register("currently_studying")}
+                  {...register("is_current")}
                   id="crr_sty"
-                  className="h-4 w-4 cursor-pointer"
+                  disabled={isSubmitting}
+                  className="h-4 w-4 cursor-pointer disabled:cursor-not-allowed"
                />
                <label htmlFor="crr_sty" className="text-sm cursor-pointer">
                   Currently studying
@@ -151,13 +154,14 @@ export default function EducationForm({ initial, onCancel, onSuccess }) {
             <div className="flex gap-3 pt-2">
                <SubmitButton
                   isSubmitting={isSubmitting}
-                  text={initial ? "Update" : "Save"}
+                  text={normalizedInitial ? "Update" : "Save"}
                />
 
                <button
                   type="button"
                   onClick={onCancel}
-                  className="border border-red-400 text-red-500 font-medium hover:bg-red-100 px-3 py-1 rounded-lg text-sm"
+                  disabled={isSubmitting}
+                  className="border border-red-400 text-red-500 font-medium hover:bg-red-100 px-3 py-1 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                >
                   Cancel
                </button>

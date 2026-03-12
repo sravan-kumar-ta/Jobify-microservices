@@ -10,9 +10,8 @@ const JobSeekers = () => {
    const { data, isLoading, error } = useFetchJobSeekersQuery({
       page,
    });
-   
-   if (error) return <div>{error}</div>;
 
+   if (error) return <div>{error}</div>;
 
    const removeDuplicates = (seekers) => {
       const uniqueSeekers = [];
@@ -34,7 +33,7 @@ const JobSeekers = () => {
             setAllData(removeDuplicates(data.results));
          } else {
             setAllData((prevData) =>
-               removeDuplicates([...prevData, ...data.results])
+               removeDuplicates([...prevData, ...data.results]),
             );
          }
       }
@@ -53,15 +52,16 @@ const JobSeekers = () => {
             <table className="min-w-full table-auto border-collapse">
                <thead className="sticky top-0 bg-gray-200 z-10">
                   <tr>
+                     <th className="px-4 py-2 border-b">#</th>
                      <th className="px-4 py-2 border-b">Name</th>
                      <th className="px-4 py-2 border-b">Username</th>
                      <th className="px-4 py-2 border-b">Email</th>
-                     <th className="px-4 py-2 border-b">Action</th>
                   </tr>
                </thead>
                <tbody align="center">
-                  {allData.map((seeker) => (
+                  {allData.map((seeker, index) => (
                      <tr key={seeker.id}>
+                        <td className="px-4 py-2 border-b">{index + 1}</td>
                         <td className="px-4 py-2 border-b">
                            {seeker.get_full_name}
                         </td>
@@ -69,11 +69,6 @@ const JobSeekers = () => {
                            {seeker.username}
                         </td>
                         <td className="px-4 py-2 border-b">{seeker.email}</td>
-                        <td className="px-4 py-2 border-b">
-                           <button className="bg-blue-500 text-white px-4 py-1 rounded">
-                              View
-                           </button>
-                        </td>
                      </tr>
                   ))}
                   <tr className="text-center">

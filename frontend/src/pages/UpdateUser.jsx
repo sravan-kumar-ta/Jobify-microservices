@@ -5,18 +5,19 @@ import SubmitButton from "../components/SubmitButton";
 import { useAuth } from "../context/AuthContext";
 import { useUpdateUserMutation } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import { SlClose } from "react-icons/sl";
 
 const UpdateUser = () => {
    const { user } = useAuth();
-   const { mutate, isLoading, isError, error } = useUpdateUserMutation();
    const navigate = useNavigate();
+   const { mutate, isLoading, isError, error } = useUpdateUserMutation();
 
    const handleSubmit = (values, { setFieldError, setSubmitting }) => {
       const filteredValues = Object.fromEntries(
          Object.entries(values).map(([key, value]) => [
             key,
             value === "" ? null : value,
-         ])
+         ]),
       );
       mutate(filteredValues, {
          onSuccess: () => {
@@ -40,7 +41,12 @@ const UpdateUser = () => {
 
    return (
       <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-4">
-         <h2 className="text-2xl font-bold mb-4">Update Admin Details</h2>
+         <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold mb-4">Update Admin Details</h2>
+            <button onClick={() => navigate(-1)} className="text-xl">
+               <SlClose className="cursor-pointer text-red-400 font-bold" />
+            </button>
+         </div>
          <Formik
             initialValues={user}
             validationSchema={userUpdateValidationSchema}

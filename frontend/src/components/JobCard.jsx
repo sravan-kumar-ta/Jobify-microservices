@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
 import { techSkills } from "../utils/techSkills";
 
-const JobCard = ({ btn_text = "Apply", job = null }) => {
+const JobCard = ({ job = null }) => {
    const excerpt = (text, length) => {
       if (!text) return "";
       if (text.length <= length) return text;
@@ -120,7 +120,7 @@ const JobCard = ({ btn_text = "Apply", job = null }) => {
                className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-sm font-semibold bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm shadow-indigo-200 transition-all"
             >
                <HiBriefcase className="w-4 h-4" />
-               {btn_text}
+               Open
             </Link>
          </div>
       </div>

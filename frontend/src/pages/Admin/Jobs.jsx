@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFetchJobsQuery } from "../../services/adminService";
 import LoadMoreButton from "../../components/admin/LoadMoreButton";
+import { Link } from "react-router-dom";
 
 const Jobs = () => {
    const [page, setPage] = useState(1);
@@ -10,7 +11,7 @@ const Jobs = () => {
 
    const { data, isLoading, isError, error } = useFetchJobsQuery(
       page,
-      selectedCompany
+      selectedCompany,
    );
 
    if (error) return <div>{error}</div>;
@@ -38,7 +39,7 @@ const Jobs = () => {
             setAllData(removeDuplicates(data.results));
          } else {
             setAllData((prevData) =>
-               removeDuplicates([...prevData, ...data.results])
+               removeDuplicates([...prevData, ...data.results]),
             );
          }
       }
@@ -68,6 +69,7 @@ const Jobs = () => {
             <table className="min-w-full table-auto border-collapse">
                <thead className="sticky top-0 bg-gray-200 z-10">
                   <tr>
+                     <th className="px-4 py-2 border-b text-left">#</th>
                      <th className="px-4 py-2 border-b text-left">Title</th>
                      <td className="px-4 py-2 border-b flex justify-center">
                         <select
@@ -82,31 +84,33 @@ const Jobs = () => {
                            ))}
                         </select>
                      </td>
-                     <th className="px-4 py-2 border-b text-right">Salary</th>
-                     <th className="px-4 py-2 border-b text-center">Date</th>
-                     <th className="px-4 py-2 border-b">Vaccancy</th>
-                     <th className="px-4 py-2 border-b">Type</th>
+                     <th className="px-4 py-2 border-b text-right">
+                        Salary{" "}
+                        <span className="text-xs font-thin ">
+                           (in LPA)
+                        </span>{" "}
+                     </th>
+                     <th className="px-4 py-2 border-b text-center">Action</th>
                   </tr>
                </thead>
                <tbody>
-                  {allData.map((job) => (
+                  {allData.map((job, index) => (
                      <tr key={job.id}>
+                        <td className="px-4 py-2 border-b">{index + 1}</td>
                         <td className="px-4 py-2 border-b">{job.title}</td>
                         <td className="px-4 py-2 border-b text-center">
                            {job.company.title}
                         </td>
-                        <td className="px-4 py-2 border-b text-right">
-                           {job.salary.toLocaleString()}&nbsp;&#8377;
+                        <td className="px-4 py-2 border-b text-center">
+                           &#8377;&nbsp;{job.salary.toLocaleString()}&nbsp;LPA
                         </td>
                         <td className="px-4 py-2 border-b text-center">
-                           {formatDate(job.date_posted)}&nbsp;to&nbsp;
-                           {formatDate(job.last_date_to_apply)}
-                        </td>
-                        <td className="px-4 py-2 border-b text-center">
-                           {job.vacancy}
-                        </td>
-                        <td className="px-4 py-2 border-b text-center">
-                           {job.employment_type}
+                           <Link
+                              to={`${job.id}`}
+                              className="bg-blue-500 text-white px-4 py-1 rounded"
+                           >
+                              View
+                           </Link>
                         </td>
                      </tr>
                   ))}

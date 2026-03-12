@@ -6,6 +6,7 @@ import {
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useNavigate } from "react-router-dom";
+import SubmitButton from "../../components/SubmitButton";
 
 const ApplyJob = ({ setIsApplying, jobId }) => {
    const [isResumeNull, setIsResumeNull] = useState(false);
@@ -15,7 +16,7 @@ const ApplyJob = ({ setIsApplying, jobId }) => {
 
    const handleSubmit = (values, { setSubmitting }) => {
       console.log("values", values);
-      
+
       setIsResumeNull(false);
       if (!values.resume_id) {
          setIsResumeNull(true);
@@ -33,7 +34,7 @@ const ApplyJob = ({ setIsApplying, jobId }) => {
                onError: () => {
                   setSubmitting(false);
                },
-            }
+            },
          );
       }
    };
@@ -50,7 +51,7 @@ const ApplyJob = ({ setIsApplying, jobId }) => {
                      {error.response.data.detail}
                   </p>
                )}
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 items-start">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 items-start mb-4">
                   {/* Resume Selection */}
                   <div
                      className={`border rounded-md ${
@@ -122,16 +123,12 @@ const ApplyJob = ({ setIsApplying, jobId }) => {
                </div>
 
                {/* Submit Button */}
-               <div className="flex justify-center md:justify-end md:mr-32">
-                  <button
-                     type="submit"
-                     className="bg-indigo-500 text-white px-4 py-2 rounded-md text-xs hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-4 md:mt-1"
-                     disabled={isSubmitting}
-                  >
-                     {isSubmitting ? "loading" : "Apply"}
-                  </button>
-               </div>
-
+               <SubmitButton
+                  type="submit"
+                  text="Apply"
+                  loadText="Applying..."
+                  isSubmitting={isSubmitting}
+               />
                {/* Close Button */}
                <IoMdCloseCircleOutline
                   onClick={() => setIsApplying(false)}

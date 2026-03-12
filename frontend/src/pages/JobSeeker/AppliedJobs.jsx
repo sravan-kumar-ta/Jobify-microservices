@@ -2,6 +2,7 @@ import React from "react";
 import { useFetchApplicationsQuery } from "../../services/seekerService";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Link } from "react-router-dom";
 
 const AppliedJobs = () => {
    const { data, isLoading, error } = useFetchApplicationsQuery();
@@ -77,7 +78,12 @@ const AppliedJobs = () => {
                                  scope="row"
                                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                               >
-                                 {job.job.title}
+                                 <Link
+                                    to={`/job/${job.job.id}`}
+                                    className="text-indigo-600 hover:text-indigo-900 hover:underline"
+                                 >
+                                    {job.job.title}
+                                 </Link>
                               </th>
                               <td className="px-6 py-4 text-center">
                                  {job.job.company.title}

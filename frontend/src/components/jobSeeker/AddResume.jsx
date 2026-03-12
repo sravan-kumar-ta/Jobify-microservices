@@ -9,14 +9,14 @@ const validationSchema = Yup.object().shape({
       .test(
          "fileSize",
          "File size is too large",
-         (value) => value && value.size <= 2 * 1024 * 1024 // 2MB size limit
+         (value) => value && value.size <= 2 * 1024 * 1024, // 2MB size limit
       )
       .test(
          "fileFormat",
          "Unsupported Format",
          (value) =>
             value &&
-            ["application/pdf", "application/msword"].includes(value.type)
+            ["application/pdf", "application/msword"].includes(value.type),
       ),
 });
 
@@ -29,7 +29,6 @@ const AddResume = ({ setIsAddingResume }) => {
    const createResumeMutation = useCreateResumeMutation();
 
    const handleSubmit = (values, { setSubmitting }) => {
-      console.log(values);
       createResumeMutation.mutate(values, {
          onSuccess: () => {
             setIsAddingResume(false);
@@ -42,9 +41,10 @@ const AddResume = ({ setIsAddingResume }) => {
                });
             }
          },
+         onSettled: () => {
+            setSubmitting(false);
+         },
       });
-
-      setSubmitting(false);
    };
 
    return (
@@ -66,8 +66,8 @@ const AddResume = ({ setIsAddingResume }) => {
                      touched["resume_title"] && errors["resume_title"]
                         ? "border-red-500"
                         : touched["resume_title"]
-                        ? "border-green-500"
-                        : "border-gray-300"
+                          ? "border-green-500"
+                          : "border-gray-300"
                   }`}
                />
 
@@ -84,8 +84,8 @@ const AddResume = ({ setIsAddingResume }) => {
                      touched["resume"] && errors["resume"]
                         ? "border-red-500"
                         : touched["resume"]
-                        ? "border-green-500"
-                        : "border-gray-300"
+                          ? "border-green-500"
+                          : "border-gray-300"
                   }`}
                   onChange={(event) => {
                      const file = event.target.files[0];

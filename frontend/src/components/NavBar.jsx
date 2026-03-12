@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useGetUserQuery, useLogout } from "../services/authService";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -64,7 +64,7 @@ const NavBar = () => {
 
          links.push({
             href: "/company/jobs",
-            text: "Jobs",
+            text: "Applications",
             icon: HiClipboardList,
          });
 
@@ -112,14 +112,17 @@ const NavBar = () => {
          <div className="max-w-6xl mx-auto px-5">
             <div className="flex items-center justify-between h-16">
                {/* Logo */}
-               <div className="flex items-center gap-2">
+               <Link
+                  to="/"
+                  className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+               >
                   <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-400 to-violet-500 flex items-center justify-center">
                      <HiLightningBolt className="w-3.5 h-3.5 text-white" />
                   </div>
                   <span className="text-sm font-semibold text-slate-800">
                      Jobify
                   </span>
-               </div>
+               </Link>
 
                {/* Center Navigation */}
                <div className="hidden md:flex flex-1 justify-center items-center gap-1">

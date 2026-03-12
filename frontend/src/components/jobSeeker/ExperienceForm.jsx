@@ -25,36 +25,44 @@ const ExperienceForm = ({
    };
 
    const handleSubmit = (values, { setSubmitting }) => {
-      console.log(values);
+      const payload = { ...values };
+      if (payload.is_current) {
+         delete payload.end_date;
+      }
+
       if (updationValues) {
          console.log("updatingg.....");
          updateExperienceMutation.mutate(
-            { id: updationValues.id, ...values },
+            { id: updationValues.id, ...payload },
             {
                onSuccess: () => {
                   setIsAddingExp(false);
                   setIsUpdatingExp(false);
                   console.log(
-                     `Experience with id ${updationValues.id} updated successfully.`
+                     `Experience with id ${updationValues.id} updated successfully.`,
                   );
                },
                onError: (error) => {
                   console.error("Error updating experience:", error);
                },
-            }
+               onSettled: () => {
+                  setSubmitting(false);
+               },
+            },
          );
       } else {
-         mutate(values, {
+         mutate(payload, {
             onSuccess: () => {
                setIsAddingExp(false);
             },
             onError: (error) => {
                console.error("Error creating experience:", error);
             },
+            onSettled: () => {
+               setSubmitting(false);
+            },
          });
       }
-
-      setSubmitting(false);
    };
 
    return (

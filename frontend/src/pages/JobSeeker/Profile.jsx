@@ -335,9 +335,9 @@ const Profile = () => {
                   ) : isLoadingResume ? (
                      <ResumeSkeleton />
                   ) : resumes?.length ? (
-                     resumes.map((resume) => (
+                     resumes.map((resume, idx) => (
                         <Resume
-                           key={resume.id}
+                           key={idx}
                            id={resume.id}
                            title={resume.resume_title}
                            link={resume.resume}
@@ -390,9 +390,9 @@ const Profile = () => {
                      <ExperienceSkeleton />
                   ) : experiences?.length ? (
                      <>
-                        {experiences.map((exp) => (
+                        {experiences.map((exp, idx) => (
                            <Experience
-                              key={exp.id}
+                              key={idx}
                               exp={exp}
                               setUpdation={setUpdation}
                            />

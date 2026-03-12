@@ -11,6 +11,8 @@ import UserCard from "../../components/UserCard";
 import { useGetUserQuery } from "../../services/authService";
 import JobForm from "../../components/company/JobForm";
 import UpdateUserForm from "../../components/company/UpdateUserForm";
+import ProfileCardSkeleton from "../../components/company/skeletons/ProfileCardSkeleton";
+import JobCardSkeleton from "../../components/JobCardSkeleton";
 
 const CompanyDashboard = () => {
    const [activeSection, setActiveSection] = useState("jobs");
@@ -40,7 +42,7 @@ const CompanyDashboard = () => {
       error: jobsError,
       isLoading: jobsLoading,
    } = useFetchJobsbyCompanyQuery();
-   
+
    const hasCompany = companyData?.company_exists;
 
    const companyDetails = useMemo(() => {
@@ -56,14 +58,14 @@ const CompanyDashboard = () => {
       };
    }, [hasCompany, companyData]);
 
-   if (companyLoading || jobsLoading || userLoading)
-      return <div>Loading...</div>;
    if (companyError) return <div>Error loading company data</div>;
 
    return (
       <>
          <div className="lg:flex justify-evenly">
-            {hasCompany ? (
+            {companyLoading ? (
+               <ProfileCardSkeleton />
+            ) : hasCompany ? (
                <ProfileCard
                   initialValues={companyDetails}
                   onEdit={() => handleSectionChange("updateCompany")}
@@ -72,17 +74,28 @@ const CompanyDashboard = () => {
             ) : (
                <CompanyForm onSuccess={refetchCompany} />
             )}
-            <UserCard
-               user={userData}
-               onEdit={() => handleSectionChange("updateUser")}
-            />
+            {userLoading ? (
+               <ProfileCardSkeleton />
+            ) : (
+               <UserCard
+                  user={userData}
+                  onEdit={() => handleSectionChange("updateUser")}
+               />
+            )}
          </div>
-         {activeSection === "jobs" && (
+
+         {jobsLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-6 md:gap-y-20 p-6 mt-4 mx-0 lg:mx-20">
-               {jobsData?.map((job) => (
-                  <JobCard key={job.id} btn_text={"Open"} job={job} />
-               ))}
+               <JobCardSkeleton />
             </div>
+         ) : (
+            activeSection === "jobs" && (
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-6 md:gap-y-20 p-6 mt-4 mx-0 lg:mx-20">
+                  {jobsData?.map((job) => (
+                     <JobCard key={job.id} job={job} />
+                  ))}
+               </div>
+            )
          )}
          {activeSection === "updateCompany" && (
             <CompanyUpdate

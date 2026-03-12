@@ -7,6 +7,11 @@ const Resume = ({ link, title, id }) => {
    const deleteResumeMutation = useDeleteResumeMutation();
 
    const handleDelete = () => {
+      const confirmed = window.confirm(
+         "Are you sure you want to delete this resume?",
+      );
+
+      if (!confirmed) return;
       deleteResumeMutation.mutate(id);
    };
 

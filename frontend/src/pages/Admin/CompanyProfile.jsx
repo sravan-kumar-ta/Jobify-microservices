@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaLocationDot, FaCalendarDays } from "react-icons/fa6";
 import { IoMdOpen } from "react-icons/io";
 import { useUpdateCompanyStatusMutation } from "../../services/adminService";
+import { SlClose } from "react-icons/sl";
 
 const CompanyProfile = () => {
    const location = useLocation();
+   const navigate = useNavigate();
    const { company } = location.state || {};
    const [approved, setApproved] = useState(company.is_active);
 
@@ -23,12 +25,13 @@ const CompanyProfile = () => {
 
    return (
       <div className="lg:w-3/5 xl:w-2/5 mx-auto bg-white rounded-lg shadow-lg p-5 mt-4">
-         <div className="flex items-end">
+         <div className="flex items-center justify-between">
             <h2 className="text-3xl tracking-wider font-bold text-slate-700">
                {company.title}
             </h2>
-            {/* <p className="mx-2">created by</p>
-            <p>{company.user_id}</p> */}
+            <button onClick={() => navigate(-1)} className="text-xl">
+               <SlClose className="cursor-pointer text-red-400 font-bold" />
+            </button>
          </div>
          <div className="flex mt-4 gap-5">
             <div className="flex">
