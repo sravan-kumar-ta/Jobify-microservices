@@ -19,7 +19,7 @@ class PrivateChatRoom(models.Model):
 
 
 class Message(models.Model):
-    room_name = models.CharField(max_length=255)
+    room_name = models.CharField(max_length=255, db_index=True)
     sender_id = models.UUIDField()
     text = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -28,4 +28,4 @@ class Message(models.Model):
         ordering = ['timestamp']
 
     def __str__(self):
-        return f"{self.sender} -> {self.room_name}: {self.message[:20]}"
+        return f"{self.sender_id} -> {self.room_name}: {self.text[:20]}"

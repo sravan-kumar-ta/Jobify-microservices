@@ -22,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = config('SECRET_KEY')
-SECRET_KEY='django-insecure-#wvn1grl0=gfu11qzwtwzkcxm=tnfn4e1a3bphcmv5(r=_%!0i' 
+SECRET_KEY = 'django-insecure-#wvn1grl0=gfu11qzwtwzkcxm=tnfn4e1a3bphcmv5(r=_%!0i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
@@ -37,10 +37,12 @@ DJANGO_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    "daphne",
     'django.contrib.staticfiles',
 ]
 
 THIRD_PARTY_APPS = [
+    "channels",
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
@@ -92,6 +94,7 @@ DATABASES = {
     'default': dj_database_url.config(
         default=config("DATABASE_URL")
     )
+
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql',
     #     'NAME': config('DB_NAME'),
@@ -151,6 +154,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'config.authentication.JWTAuthentication',
     ),
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
 }
 
 CHANNEL_LAYERS = {
@@ -160,6 +166,9 @@ CHANNEL_LAYERS = {
             'hosts': [config('REDIS_URL', 'redis://localhost:6379')],
         },
     },
+    # "default": {
+    #     "BACKEND": "channels.layers.InMemoryChannelLayer",
+    # },
 }
 
 SIMPLE_JWT_SECRET_KEY = config('JWT_SIGNING_KEY')  # same as SIGNING_KEY in auth-service
