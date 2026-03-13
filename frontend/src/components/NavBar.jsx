@@ -51,7 +51,7 @@ const NavBar = () => {
             icon: HiUser,
          });
          links.push({
-            href: "/job_seeker/connections",
+            href: "/job_seeker/chat",
             text: "Chats",
             icon: HiChat,
          });
@@ -69,7 +69,7 @@ const NavBar = () => {
          });
 
          links.push({
-            href: "/company/connections",
+            href: "/company/chat",
             text: "Chats",
             icon: HiChat,
          });

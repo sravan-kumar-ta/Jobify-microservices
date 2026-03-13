@@ -3,15 +3,17 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Profile from "../pages/JobSeeker/Profile";
 import UpdateProfile from "../pages/JobSeeker/UpdateProfile";
 import AppliedJobs from "../pages/JobSeeker/AppliedJobs";
-import ChatRoom from "../pages/JobSeeker/ChatRoom";
-import ChatList from "../pages/JobSeeker/ChatList";
+// import ChatRoom from "../pages/Company/ChatRoom";
+// import ChatList from "../pages/JobSeeker/ChatList";
+import ChatRoom from "../pages/Chat/ChatRoom";
+import ChatList from "../pages/Chat/ChatList";
 
 const JobSeekerRoutesConfig = [
    { path: "profile", element: <Profile /> },
    { path: "profile/update", element: <UpdateProfile /> },
    { path: "applied-jobs", element: <AppliedJobs /> },
-   { path: "connections", element: <ChatList /> },
-   { path: "connections/:roomID/:userID", element: <ChatRoom /> },
+   { path: "chat", element: <ChatList /> },
+   { path: "chat/:roomID/:userID", element: <ChatRoom /> },
 ];
 
 const JobSeekerRoutes = () => {

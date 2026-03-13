@@ -38,7 +38,6 @@ const Applicant = ({ application, setApplication, jobID }) => {
    const [status, setStatus] = useState(application.status);
    const [selectedResumeId, setSelectedResumeId] = useState(null);
    const [resumeURL, setResumeURL] = useState(null);
-   const [chatLoading, setChatLoading] = useState(false);
    const [updateLoading, setUpdateLoading] = useState(false);
 
    const navigate = useNavigate();
@@ -52,7 +51,11 @@ const Applicant = ({ application, setApplication, jobID }) => {
       application.applicant_id,
    ]);
 
-   const { mutate } = useUpdateApplicationMutation(jobID, prevStatus, newStatus);
+   const { mutate } = useUpdateApplicationMutation(
+      jobID,
+      prevStatus,
+      newStatus,
+   );
 
    const {
       data,
@@ -95,7 +98,7 @@ const Applicant = ({ application, setApplication, jobID }) => {
             onError: () => {
                setUpdateLoading(false);
             },
-         }
+         },
       );
    };
 
@@ -105,25 +108,21 @@ const Applicant = ({ application, setApplication, jobID }) => {
    };
 
    const handleChat = () => {
-      setChatLoading(true);
-
       createChatMutation.mutate(application.applicant_id, {
          onSuccess: (data) => {
             navigate(
-               `/company/connections/${data.room_name}/${application.applicant_id}`
+               `/company/chat/${data.room_name}/${application.applicant_id}`,
             );
          },
          onError: (error) => {
             console.error("Error creating chat room:", error);
-            setChatLoading(false);
          },
       });
    };
 
-   const displayName =
-      usernameLoading
-         ? "Loading..."
-         : usernames?.[0]?.username || application.applicant_id?.slice(0, 8);
+   const displayName = usernameLoading
+      ? "Loading..."
+      : usernames?.[0]?.username || application.applicant_id?.slice(0, 8);
 
    const initials = displayName?.slice(0, 2)?.toUpperCase() || "AP";
 
@@ -259,11 +258,13 @@ const Applicant = ({ application, setApplication, jobID }) => {
             {/* Chat */}
             <button
                onClick={handleChat}
-               disabled={chatLoading}
+               disabled={createChatMutation.isPending}
                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold border-none cursor-pointer transition-all mt-auto disabled:opacity-70 disabled:cursor-not-allowed"
             >
                <HiChat className="w-4 h-4" />
-               {chatLoading ? "Opening chat..." : "Chat with applicant"}
+               {createChatMutation.isPending
+                  ? "Opening chat..."
+                  : "Chat with applicant"}
             </button>
          </div>
       </div>
