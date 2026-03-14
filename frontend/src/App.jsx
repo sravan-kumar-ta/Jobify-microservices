@@ -9,6 +9,7 @@ import CompanyRoutes from "./routes/CompanyRoutes";
 import JobSeekerRoutes from "./routes/JobSeekerRoutes";
 import JobDetails from "./pages/JobDetails";
 import Home from "./pages/JobSeeker/Home";
+import NotFound from "./pages/NotFound";
 
 function App() {
    return (
@@ -24,6 +25,7 @@ function App() {
                   <Route path="company/*" element={<CompanyRoutes />} />
                   <Route path="job_seeker/*" element={<JobSeekerRoutes />} />
                   <Route path="/job/:jobId" element={<JobDetails />} />
+                  <Route path="*" element={<NotFound />} />
                </Routes>
             </ConditionalNavBar>
          </BrowserRouter>

@@ -132,7 +132,7 @@ const Register = () => {
                   </h1>
                   <p className="text-indigo-200 text-sm leading-relaxed max-w-xs">
                      Join thousands of job seekers and companies already
-                     building their future on WorkFolio.
+                     building their future on Jobify.
                   </p>
 
                   <div className="flex gap-3 mt-8">
