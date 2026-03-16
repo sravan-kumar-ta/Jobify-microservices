@@ -4,12 +4,14 @@ from django.conf import settings
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 
+
 class SimpleUser:
     def __init__(self, payload):
         self.id = UUID(payload.get("id"))  # for strict typing
         self.username = payload.get("username")
         self.role = payload.get("role")
         self.is_authenticated = True
+
 
 class JWTAuthentication(BaseAuthentication):
     def authenticate(self, request):

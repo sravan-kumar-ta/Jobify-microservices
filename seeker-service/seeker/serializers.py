@@ -44,16 +44,37 @@ class MonthField(serializers.DateField):
 
 class ExperienceSerializer(serializers.ModelSerializer):
     start_date = MonthField()
-    end_date = MonthField()
+    end_date = MonthField(required=False, allow_null=True)
 
     class Meta:
         model = Experience
         fields = "__all__"
         read_only_fields = ['seeker']
 
+    def validate(self, attrs):
+        start_date = attrs.get("start_date")
+        end_date = attrs.get("end_date")
+        is_current = attrs.get("is_current", False)
+
+        if is_current:
+            attrs["end_date"] = None
+        else:
+            if not end_date:
+                raise serializers.ValidationError({
+                    "end_date": "End date is required if this is not your current job."
+                })
+
+        if start_date and end_date and end_date < start_date:
+            raise serializers.ValidationError({
+                "end_date": "End date cannot be earlier than start date."
+            })
+
+        return attrs
+
     def create(self, validated_data):
         validated_data['seeker'] = SeekerProfile.objects.get(
-            user_id=self.context['request'].user.id)
+            user_id=self.context['request'].user.id
+        )
         return super().create(validated_data)
 
 
