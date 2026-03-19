@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework.permissions import BasePermission
 
 
@@ -19,3 +20,9 @@ class IsAdminOrOwner(BasePermission):
             return True
 
         return False
+
+
+class IsInternalService(BasePermission):
+    def has_permission(self, request, view):
+        token = request.headers.get("X-Internal-Service-Token")
+        return token == settings.INTERNAL_SERVICE_TOKEN

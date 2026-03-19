@@ -100,3 +100,13 @@ class EducationSerializer(serializers.ModelSerializer):
         validated_data['seeker'] = SeekerProfile.objects.get(
             user_id=self.context['request'].user.id)
         return super().create(validated_data)
+
+
+class SeekerMatchingPayloadSerializer(serializers.Serializer):
+    seeker_id = serializers.UUIDField()
+    skills = serializers.ListField(child=serializers.CharField())
+    education = serializers.ListField()
+    experience = serializers.ListField()
+    total_experience_years = serializers.FloatField()
+    is_matchable = serializers.BooleanField()
+    updated_at = serializers.DateTimeField()

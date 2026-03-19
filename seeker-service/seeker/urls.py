@@ -10,5 +10,11 @@ router.register(r'experience', views.ExperienceViewSet)
 router.register(r'education', views.EducationViewSet)
 
 urlpatterns = [
-                  path("skills/", views.SkillsView.as_view())
-              ] + router.urls
+    path("skills/", views.SkillsView.as_view()),
+    # Internal service
+    path(
+        "<uuid:seeker_id>/matching-payload/",
+        views.InternalSeekerMatchingPayloadView.as_view(),
+        name="internal-seeker-matching-payload",
+    ),
+] + router.urls

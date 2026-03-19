@@ -5,10 +5,12 @@ from rest_framework.exceptions import PermissionDenied, NotFound
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from seeker import serializers
 from seeker.models import SeekerProfile, Experience, Resume, Skills, Education
-from seeker.permissions import IsAdminOrOwner
+from seeker.permissions import IsAdminOrOwner, IsInternalService
+from .selectors import build_seeker_matching_payload
 
 
 class SeekerProfileViewSet(viewsets.ModelViewSet):
@@ -120,3 +122,12 @@ class EducationViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Education.objects.filter(seeker__user_id=self.request.user.id).order_by('-start_year')
+
+class InternalSeekerMatchingPayloadView(APIView):
+    permission_classes = [IsInternalService]
+
+    def get(self, request, seeker_id):
+        payload = build_seeker_matching_payload(seeker_id)
+        serializer = serializers.SeekerMatchingPayloadSerializer(payload)
+
+        return Response(serializer.data)

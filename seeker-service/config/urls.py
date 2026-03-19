@@ -10,3 +10,6 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+# /api/seeker/19cc2a1cb-984d-4f79-93d7-b49daf9c78e0/matching-payload/
