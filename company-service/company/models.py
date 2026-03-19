@@ -32,6 +32,7 @@ class Job(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='jobs')
     salary = models.PositiveIntegerField(null=True)
     date_posted = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     experience = models.PositiveIntegerField(default=0)  # in years
     skills = models.JSONField(default=list)
 

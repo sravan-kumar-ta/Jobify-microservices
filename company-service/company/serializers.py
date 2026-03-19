@@ -57,3 +57,15 @@ class ApplicationSerializer(serializers.ModelSerializer):
         representation['job'] = JobSerializer(instance.job).data
         # representation['applicant'] = SeekerProfileSerializer(instance.applicant).data
         return representation
+
+
+class JobMatchingPayloadSerializer(serializers.Serializer):
+    job_id = serializers.UUIDField()
+    company_id = serializers.UUIDField(allow_null=True)
+    title = serializers.CharField()
+    description = serializers.CharField()
+    # required_skills = serializers.ListField(child=serializers.CharField())
+    required_skills = serializers.JSONField()
+    min_experience_years = serializers.IntegerField()
+    is_matchable = serializers.BooleanField()
+    updated_at = serializers.DateTimeField()

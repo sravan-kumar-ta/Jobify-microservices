@@ -20,4 +20,10 @@ urlpatterns = [
     path('admin/company-approval/', admin.ApproveCompany.as_view()),
     path('admin/jobs/', admin.AllJobsListView.as_view()),
     path('admin/applications/', admin.AllApplicationListView.as_view()),
+    # Internal service
+    path(
+        "job/<int:job_id>/matching-payload/",
+        views.InternalJobMatchingPayloadView.as_view(),
+        name="internal-job-matching-payload",
+    ),
 ] + router.urls
