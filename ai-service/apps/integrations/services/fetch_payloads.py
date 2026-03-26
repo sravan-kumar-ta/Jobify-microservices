@@ -8,7 +8,5 @@ def fetch_matching_payloads(job_id, seeker_id):
 
     job_payload = company_client.get_job_matching_payload(job_id)
     seeker_payload = seeker_client.get_seeker_matching_payload(seeker_id)
-    print("job payload==========", job_payload)
-    print("seeker payload==========", seeker_payload)
 
     return job_payload, seeker_payload

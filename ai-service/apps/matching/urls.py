@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import GenerateMatchView
+from .views import GenerateMatchV1View, GenerateMatchV2View
 
 urlpatterns = [
-    path("generate/", GenerateMatchView.as_view(), name="generate-match"),
+    path("v1/generate/", GenerateMatchV1View.as_view(), name="generate-match-v1"),
+    path("v2/generate/", GenerateMatchV2View.as_view(), name="generate-match-v2"),
 ]

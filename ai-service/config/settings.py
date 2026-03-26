@@ -16,7 +16,6 @@ from decouple import config, Csv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -39,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     "rest_framework",
+    'corsheaders',
+    "pgvector.django",
 
     "apps.common",
     "apps.integrations",
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -76,17 +78,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 ASGI_APPLICATION = "config.asgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST", "localhost"),
+        "PORT": config("DB_PORT", "5432"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -106,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
@@ -117,7 +120,6 @@ TIME_ZONE = "Asia/Kolkata"
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
@@ -135,6 +137,13 @@ REST_FRAMEWORK = {
     ],
 }
 
-COMPANY_SERVICE_BASE_URL = config("COMPANY_SERVICE_BASE_URL", "http://localhost:8001")
-SEEKER_SERVICE_BASE_URL = config("SEEKER_SERVICE_BASE_URL", "http://localhost:8002")
-INTERNAL_SERVICE_TOKEN = config("INTERNAL_SERVICE_TOKEN", "super-secret-internal-token")
+CORS_ALLOWED_ORIGINS = config(
+    'CORS_ALLOWED_ORIGINS',
+    cast=Csv()
+)
+
+COMPANY_SERVICE_BASE_URL = config("COMPANY_SERVICE_BASE_URL", "")
+SEEKER_SERVICE_BASE_URL = config("SEEKER_SERVICE_BASE_URL", "")
+INTERNAL_SERVICE_TOKEN = config("INTERNAL_SERVICE_TOKEN", "")
+OPENAI_API_KEY = config("OPENAI_API_KEY", "")
+OPENAI_EMBEDDING_MODEL = config("OPENAI_EMBEDDING_MODEL", "")

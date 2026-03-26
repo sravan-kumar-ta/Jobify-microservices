@@ -4,7 +4,7 @@ from django.utils import timezone
 from .models import JobSnapshot, SeekerSnapshot
 
 
-SNAPSHOT_MAX_AGE_MINUTES = 30
+SNAPSHOT_MAX_AGE_MINUTES = 1
 
 # Important: This is a simple V1 strategy.
 # It is not perfect, but good enough.
