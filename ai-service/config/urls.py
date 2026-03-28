@@ -22,6 +22,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/matches/", include("apps.matching.urls")),
+    path("api/cover-letters/", include("apps.cover_letters.urls")),
 ]
 
 if settings.DEBUG:

@@ -37,14 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    "rest_framework",
+    'rest_framework',
     'corsheaders',
-    "pgvector.django",
+    'pgvector.django',
 
-    "apps.common",
-    "apps.integrations",
-    "apps.snapshots",
-    "apps.matching",
+    'apps.common',
+    'apps.integrations',
+    'apps.snapshots',
+    'apps.matching',
+    'apps.cover_letters',
 ]
 
 MIDDLEWARE = [
@@ -147,3 +148,4 @@ SEEKER_SERVICE_BASE_URL = config("SEEKER_SERVICE_BASE_URL", "")
 INTERNAL_SERVICE_TOKEN = config("INTERNAL_SERVICE_TOKEN", "")
 OPENAI_API_KEY = config("OPENAI_API_KEY", "")
 OPENAI_EMBEDDING_MODEL = config("OPENAI_EMBEDDING_MODEL", "")
+OPENAI_CHAT_MODEL = config("OPENAI_CHAT_MODEL", "")

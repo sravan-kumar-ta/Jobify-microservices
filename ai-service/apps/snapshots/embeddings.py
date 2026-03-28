@@ -1,7 +1,7 @@
 import hashlib
 from django.utils import timezone
 
-from apps.integrations.clients.openai_client import OpenAIEmbeddingClient
+from apps.integrations.clients.openai_client import OpenAIClient
 
 
 def build_job_embedding_text(job_snapshot) -> str:
@@ -54,7 +54,7 @@ def ensure_job_embedding(job_snapshot):
     ):
         return job_snapshot
 
-    client = OpenAIEmbeddingClient()
+    client = OpenAIClient()
     vector = client.create_embedding(embedding_text)
 
     job_snapshot.embedding = vector
@@ -82,7 +82,7 @@ def ensure_seeker_embedding(seeker_snapshot):
     ):
         return seeker_snapshot
 
-    client = OpenAIEmbeddingClient()
+    client = OpenAIClient()
     vector = client.create_embedding(embedding_text)
 
     seeker_snapshot.embedding = vector
