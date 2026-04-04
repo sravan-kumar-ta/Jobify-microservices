@@ -8,7 +8,6 @@ import ApplyJob from "./JobSeeker/ApplyJob";
 import { NumericFormat } from "react-number-format";
 import { techSkills } from "../utils/techSkills";
 import JobDetailsSkeleton from "../components/company/skeletons/JobDetailsSkeleton";
-import JobDetailsCard from "../components/JobDetails/JobDetailsCard";
 
 const JobDetails = () => {
    const { jobId } = useParams();
@@ -24,6 +23,7 @@ const JobDetails = () => {
       error,
    } = useFetchJobQuery(jobId);
 
+   // Determine role without useless state
    let userRole = "";
 
    if (user && data) {
@@ -74,15 +74,6 @@ const JobDetails = () => {
 
    return (
       <>
-         <div className="min-h-screen bg-slate-50">
-            <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-5">
-               <JobDetailsCard
-                  job={data}
-                  userId={user.id}
-                  applied={alreadyApplied}
-               />
-            </div>
-         </div>
          {!showUpdation ? (
             <div className="flex justify-center">
                <div className="w-full lg:w-2/6 bg-white shadow-md rounded-lg p-6 my-4">
