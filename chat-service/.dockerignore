@@ -68,6 +68,7 @@ media
 **/migrations/*.pyc
 **/migrations/__pycache__/
 !**/migrations/*.py
+staticfiles
 
 # Git
 .git
