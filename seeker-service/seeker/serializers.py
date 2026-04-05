@@ -110,3 +110,9 @@ class SeekerMatchingPayloadSerializer(serializers.Serializer):
     total_experience_years = serializers.FloatField()
     is_matchable = serializers.BooleanField()
     updated_at = serializers.DateTimeField()
+
+
+class SeekerMatchingMetadataSerializer(serializers.Serializer):
+    seeker_id = serializers.UUIDField()
+    updated_at = serializers.DateTimeField(allow_null=True)
+    is_matchable = serializers.BooleanField()

@@ -17,4 +17,9 @@ urlpatterns = [
         views.InternalSeekerMatchingPayloadView.as_view(),
         name="internal-seeker-matching-payload",
     ),
+    path(
+        "<uuid:seeker_id>/matching-metadata/",
+        views.InternalSeekerMatchingMetadataView.as_view(),
+        name="internal-seeker-matching-metadata",
+    ),
 ] + router.urls

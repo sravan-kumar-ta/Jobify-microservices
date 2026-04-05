@@ -82,3 +82,23 @@ def build_seeker_matching_payload(seeker_id):
         "is_matchable": True,
         "updated_at": updated_at,
     }
+
+
+def build_seeker_matching_metadata(seeker_id):
+    seeker = get_object_or_404(SeekerProfile, user_id=seeker_id)
+
+    skills_obj = Skills.objects.filter(seeker=seeker).first()
+    education_qs = Education.objects.filter(seeker=seeker)
+    experience_qs = Experience.objects.filter(seeker=seeker)
+
+    updated_at = get_seeker_payload_updated_at(
+        skills_obj=skills_obj,
+        education_qs=education_qs,
+        experience_qs=experience_qs,
+    )
+
+    return {
+        "seeker_id": seeker.user_id,
+        "updated_at": updated_at,
+        "is_matchable": True,
+    }

@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from seeker import serializers
 from seeker.models import SeekerProfile, Experience, Resume, Skills, Education
 from seeker.permissions import IsAdminOrOwner, IsInternalService
-from .selectors import build_seeker_matching_payload
+from .selectors import build_seeker_matching_payload, build_seeker_matching_metadata
 
 
 class SeekerProfileViewSet(viewsets.ModelViewSet):
@@ -129,5 +129,15 @@ class InternalSeekerMatchingPayloadView(APIView):
     def get(self, request, seeker_id):
         payload = build_seeker_matching_payload(seeker_id)
         serializer = serializers.SeekerMatchingPayloadSerializer(payload)
+
+        return Response(serializer.data)
+
+
+class InternalSeekerMatchingMetadataView(APIView):
+    permission_classes = [IsInternalService]
+
+    def get(self, request, seeker_id):
+        metadata = build_seeker_matching_metadata(seeker_id)
+        serializer = serializers.SeekerMatchingMetadataSerializer(metadata)
 
         return Response(serializer.data)
