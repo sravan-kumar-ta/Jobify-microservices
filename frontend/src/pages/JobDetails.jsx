@@ -1,20 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFetchJobQuery } from "../services/companyService";
 import { useGetUserQuery } from "../services/authService";
 import { useFetchApplicationsQuery } from "../services/seekerService";
 import UpdateJob from "../components/UpdateJob";
-import ApplyJob from "./JobSeeker/ApplyJob";
-import { NumericFormat } from "react-number-format";
-import { techSkills } from "../utils/techSkills";
 import JobDetailsSkeleton from "../components/company/skeletons/JobDetailsSkeleton";
 import JobDetailsCard from "../components/JobDetails/JobDetailsCard";
+import JobApply from "../components/JobDetails/JobApply";
 
 const JobDetails = () => {
    const { jobId } = useParams();
 
    const [showUpdation, setShowUpdation] = useState(false);
    const [isApplying, setIsApplying] = useState(false);
+   const [showApply, setShowApply] = useState(false);
+   const [applied, setApplied] = useState(false);
 
    const { data: user, isLoading: isLoadingUser } = useGetUserQuery();
    const {
@@ -47,19 +47,6 @@ const JobDetails = () => {
       user?.role === "job_seeker" &&
       applications.some((application) => application.job?.id === Number(jobId));
 
-   const getLabel = (skills) => {
-      if (!skills) return "";
-
-      return skills
-         .split(",")
-         .map(
-            (skill) =>
-               techSkills.find((t) => t.value === skill.trim())?.label ||
-               skill.trim(),
-         )
-         .join(", ");
-   };
-
    if (isLoadingJob || isLoadingUser) {
       return (
          <div>
@@ -74,116 +61,30 @@ const JobDetails = () => {
 
    return (
       <>
-         <div className="min-h-screen bg-slate-50">
-            <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-5">
-               <JobDetailsCard
-                  job={data}
-                  userId={user.id}
-                  applied={alreadyApplied}
-               />
-            </div>
+         <div
+            className={`mx-auto px-4 sm:px-6 py-8 w-full
+          ${
+             showApply && !applied || showUpdation
+                ? "max-w-7xl flex flex-col lg:flex-row gap-5 items-start"
+                : "max-w-3xl flex flex-col gap-5"
+          }`}
+         >
+            <JobDetailsCard
+               job={data}
+               userId={user.id}
+               applied={alreadyApplied}
+               showApply={showApply}
+               isLoadingApplications={isLoadingApplications}
+               setShowApply={setShowApply}
+               user={userRole}
+               setShowUpdation={setShowUpdation}
+            />
+            {showApply && <JobApply job={data} setShowApply={setShowApply} />}
+
+            {showUpdation && (
+               <UpdateJob jobDetails={data} toggle={setShowUpdation} />
+            )}
          </div>
-         {!showUpdation ? (
-            <div className="flex justify-center">
-               <div className="w-full lg:w-2/6 bg-white shadow-md rounded-lg p-6 my-4">
-                  <div className="flex justify-between">
-                     <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-                        {data.title}
-                     </h2>
-                     <p className="text-lg text-gray-600 mb-2">
-                        {data.company.title}
-                     </p>
-                     <p className="text-lg text-gray-600 mb-2">
-                        {data.company.location}
-                     </p>
-                  </div>
-
-                  <div className="mx-20">
-                     <p className="text-md text-gray-600 mb-2">
-                        <strong className="mr-2">Date Posted:</strong>
-                        {new Date(data.date_posted).toLocaleDateString()}
-                     </p>
-
-                     <p className="text-md text-gray-600 mb-2">
-                        <strong className="mr-2">Salary:</strong>
-                        {data.salary ? (
-                           <NumericFormat
-                              value={data.salary}
-                              thousandSeparator={true}
-                              prefix={"₹ "}
-                              suffix={" LPA"}
-                              displayType={"text"}
-                              className="text-gray-500"
-                           />
-                        ) : (
-                           "Not disclosed"
-                        )}
-                     </p>
-
-                     <p className="text-md text-gray-600 mb-2">
-                        <strong className="mr-2">Experience:</strong> Minimum{" "}
-                        {data.experience} years.
-                     </p>
-
-                     <p className="text-md text-gray-600 mb-2">
-                        <strong className="mr-2">Skills:</strong>{" "}
-                        {getLabel(data.skills)}
-                     </p>
-
-                     <p className="text-md text-gray-600 mb-2">
-                        <strong className="mr-2">Description:</strong>{" "}
-                        {data.description}
-                     </p>
-                  </div>
-
-                  {/* Seeker actions */}
-                  {userRole === "seeker" && !isApplying && (
-                     <div className="flex justify-center mt-4">
-                        {isLoadingApplications ? (
-                           <button
-                              disabled
-                              className="text-sm sm:text-base bg-gray-400 text-white py-2 px-4 rounded cursor-not-allowed"
-                           >
-                              Checking...
-                           </button>
-                        ) : alreadyApplied ? (
-                           <button
-                              disabled
-                              className="text-sm sm:text-base bg-green-600 text-white py-2 px-4 rounded cursor-not-allowed"
-                           >
-                              Already Applied
-                           </button>
-                        ) : (
-                           <button
-                              onClick={() => setIsApplying(true)}
-                              className="text-sm sm:text-base bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors duration-300"
-                           >
-                              Apply Job
-                           </button>
-                        )}
-                     </div>
-                  )}
-
-                  {/* Admin / Owner actions */}
-                  {(userRole === "admin" || userRole === "owner") && (
-                     <div className="flex justify-center mt-4">
-                        <button
-                           onClick={() => setShowUpdation(true)}
-                           className="text-sm sm:text-base bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors duration-300"
-                        >
-                           Update Job
-                        </button>
-                     </div>
-                  )}
-               </div>
-            </div>
-         ) : (
-            <UpdateJob jobDetails={data} toggle={setShowUpdation} />
-         )}
-
-         {isApplying && !alreadyApplied && (
-            <ApplyJob setIsApplying={setIsApplying} jobId={jobId} />
-         )}
       </>
    );
 };
