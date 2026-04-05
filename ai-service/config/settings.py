@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import dj_database_url
 from pathlib import Path
 from decouple import config, Csv
 
@@ -83,14 +84,17 @@ ASGI_APPLICATION = "config.asgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("DB_NAME"),
-        "USER": config("DB_USER"),
-        "PASSWORD": config("DB_PASSWORD"),
-        "HOST": config("DB_HOST", "localhost"),
-        "PORT": config("DB_PORT", "5432"),
-    }
+    'default': dj_database_url.config(
+        default=config("DATABASE_URL")
+    )
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     "NAME": config("DB_NAME"),
+    #     "USER": config("DB_USER"),
+    #     "PASSWORD": config("DB_PASSWORD"),
+    #     "HOST": config("DB_HOST", "localhost"),
+    #     "PORT": config("DB_PORT", "5432"),
+    # }
 }
 
 # Password validation

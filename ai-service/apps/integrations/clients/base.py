@@ -19,8 +19,7 @@ class BaseServiceClient:
                 response.raise_for_status()
                 return response.json()
         except httpx.TimeoutException:
-            raise ServiceIntegrationError(
-                "External service request timed out.")
+            raise ServiceIntegrationError("External service request timed out.")
         except httpx.HTTPStatusError as exc:
             raise ServiceIntegrationError(
                 f"External service returned {exc.response.status_code}."

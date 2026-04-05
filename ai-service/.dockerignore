@@ -1,0 +1,77 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+**/.idea/
+*.swp
+
+# Environments & Secrets
+.env
+*.env
+*.pem
+*.key
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Documentation
+docs/
+
+# Tests
+tests/
+test_*.py
+
+# Coverage reports
+coverage/
+
+# Configuration files
+*.cfg
+
+# Database files
+*.db
+
+# Cache files
+.cache
+
+# Logs & builds
+*.log
+build/
+dist/
+node_modules/
+
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+**/db.sqlite3
+db.sqlite3-journal
+media
+**media
+**/migrations/*.pyc
+**/migrations/__pycache__/
+!**/migrations/*.py
+
+# Git
+.git
+.gitignore
+.gitmodules
+
+Readme.md
