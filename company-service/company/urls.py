@@ -22,6 +22,11 @@ urlpatterns = [
     path('admin/applications/', admin.AllApplicationListView.as_view()),
     # Internal service
     path(
+        "job/<int:job_id>/matching-metadata/",
+        views.InternalJobMatchingMetadataView.as_view(),
+        name="internal-job-matching-metadata",
+    ),
+    path(
         "job/<int:job_id>/matching-payload/",
         views.InternalJobMatchingPayloadView.as_view(),
         name="internal-job-matching-payload",

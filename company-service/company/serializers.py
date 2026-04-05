@@ -59,13 +59,18 @@ class ApplicationSerializer(serializers.ModelSerializer):
         return representation
 
 
+class JobMatchingMetadataSerializer(serializers.Serializer):
+    job_id = serializers.IntegerField()
+    updated_at = serializers.DateTimeField(allow_null=True)
+    is_matchable = serializers.BooleanField()
+
+
 class JobMatchingPayloadSerializer(serializers.Serializer):
     job_id = serializers.UUIDField()
     company_id = serializers.UUIDField(allow_null=True)
     title = serializers.CharField()
     description = serializers.CharField()
-    # required_skills = serializers.ListField(child=serializers.CharField())
-    required_skills = serializers.JSONField()
+    required_skills = serializers.ListField(child=serializers.CharField())
     min_experience_years = serializers.IntegerField()
     is_matchable = serializers.BooleanField()
     updated_at = serializers.DateTimeField()

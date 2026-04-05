@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 from . import serializers
 from .models import Company, Job, Application
 from .permissions import IsCompanyOrAdmin, IsCompany, IsInternalService, RoleBasedPermission
-from .selectors import build_job_matching_payload
+from .selectors import build_job_matching_payload, build_job_matching_metadata
 
 class UserCompanyCheckView(generics.GenericAPIView):
     serializer_class = serializers.CompanySerializer
@@ -179,5 +179,16 @@ class InternalJobMatchingPayloadView(APIView):
 
         payload = build_job_matching_payload(job)
         serializer = serializers.JobMatchingPayloadSerializer(payload)
+
+        return Response(serializer.data)
+
+class InternalJobMatchingMetadataView(APIView):
+    permission_classes = [IsInternalService]
+
+    def get(self, request, job_id):
+        job = get_object_or_404(Job, id=job_id)
+
+        metadata = build_job_matching_metadata(job)
+        serializer = serializers.JobMatchingMetadataSerializer(metadata)
 
         return Response(serializer.data)
