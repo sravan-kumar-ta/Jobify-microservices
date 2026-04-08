@@ -17,15 +17,9 @@ const JobCard = ({ job = null }) => {
    };
 
    const getSkillsArray = (skills) => {
-      if (!skills) return [];
-      return skills
-         .split(",")
-         .map((skill) => skill.trim())
-         .filter(Boolean)
-         .map(
-            (skill) =>
-               techSkills.find((t) => t.value === skill)?.label || skill,
-         );
+      return (skills || []).map(
+         (skill) => techSkills.find((t) => t.value === skill)?.label || skill,
+      );
    };
 
    const btnLink = `/job/${job.id}`;

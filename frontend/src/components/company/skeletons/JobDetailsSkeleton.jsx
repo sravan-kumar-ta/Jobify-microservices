@@ -76,26 +76,9 @@ const JobDetailsSkeleton = () => {
                   </div>
                </div>
 
-               {/* AI Score area */}
-               <div className="px-6 py-3 border-b border-slate-100 flex flex-col gap-3">
-                  <button
-                     disabled
-                     className="flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-xl bg-violet-50 border border-violet-200 text-violet-400 text-sm font-semibold cursor-not-allowed opacity-80"
-                  >
-                     <HiSparkles className="w-4 h-4" />
-                     <span>Check Matching Score with AI</span>
-                  </button>
-               </div>
-
                {/* CTA Buttons */}
-               <div className="px-6 py-5 flex flex-col sm:flex-row gap-3">
-                  <button
-                     disabled
-                     className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-indigo-300 text-white text-sm font-semibold shadow-md shadow-indigo-100 border-none cursor-not-allowed opacity-80"
-                  >
-                     <HiBriefcase className="w-4 h-4" />{" "}
-                     <span>Ready to Apply</span>
-                  </button>
+               <div className="px-6 pb-5">
+                     <Skeleton height={20} width="10%" />
                </div>
             </div>
          </div>

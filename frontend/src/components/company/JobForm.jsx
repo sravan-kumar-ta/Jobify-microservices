@@ -29,6 +29,8 @@ const JobForm = ({ onClick }) => {
       { setSubmitting, setFieldError, resetForm },
    ) => {
       console.log("Form values before submission:", values);
+      values.skills = selectedSkills.map((skill) => skill.value);
+      
       setPermission(true);
 
       const filteredValues = Object.fromEntries(

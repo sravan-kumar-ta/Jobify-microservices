@@ -1,5 +1,5 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { HiBriefcase, HiSparkles } from "react-icons/hi";
@@ -94,26 +94,30 @@ const UpdateJob = ({ jobDetails, toggle }) => {
    const updateJobMutation = useUpdateJobMutation();
    const animatedComponents = makeAnimated();
 
-   const [selectedSkills, setSelectedSkills] = useState(() => {
-      return techSkills.filter((option) =>
-         jobDetails?.skills?.includes(option.value),
+   const [selectedSkills, setSelectedSkills] = useState([]);
+
+   useEffect(() => {
+      const matchedSkills = techSkills.filter((option) =>
+         (jobDetails?.skills || []).includes(option.value),
       );
-   });
+
+      setSelectedSkills(matchedSkills);
+   }, [jobDetails]);
 
    const initialValues = {
       title: jobDetails?.title || "",
       salary: jobDetails?.salary || "",
-      skills: jobDetails?.skills || "",
+      skills: jobDetails?.skills || [],
       description: jobDetails?.description || "",
       experience: jobDetails?.experience || "",
    };
 
    const handleSubmit = (values, { setSubmitting, setFieldError }) => {
       const filteredValues = Object.fromEntries(
-         Object.entries(values).map(([key, value]) => [
-            key,
-            value === "" ? null : value,
-         ]),
+         Object.entries({
+            ...values,
+            skills: selectedSkills.map((skill) => skill.value),
+         }).map(([key, value]) => [key, value === "" ? null : value]),
       );
 
       updateJobMutation.mutate(
@@ -246,7 +250,7 @@ const UpdateJob = ({ jobDetails, toggle }) => {
                               setSelectedSkills(skills);
                               setFieldValue(
                                  "skills",
-                                 skills.map((s) => s.value).join(","),
+                                 skills.map((s) => s.value),
                               );
                            }}
                         />

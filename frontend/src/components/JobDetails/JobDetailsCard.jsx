@@ -38,14 +38,9 @@ const JobDetailsCard = ({
       });
    };
 
-   const skillLabels =
-      job.skills
-         .split(",")
-         .map(
-            (skill) =>
-               techSkills.find((t) => t.value === skill.trim())?.label ||
-               skill.trim(),
-         ) || [];
+   const skillLabels = (job?.skills || []).map(
+      (skill) => techSkills.find((t) => t.value === skill)?.label || skill,
+   );
 
    const handleGenerate = () => {
       mutate({
@@ -130,19 +125,23 @@ const JobDetailsCard = ({
          </div>
 
          {/* Skills */}
-         <div className="px-6 pt-4  border-b border-slate-100">
+         <div className="px-6 pt-4 border-b border-slate-100">
             <p className="text-xs font-semibold text-slate-600 uppercase tracking-widest mb-3">
                Skills Required
             </p>
             <div className="flex flex-wrap gap-2">
-               {skillLabels.map((skill, idx) => (
-                  <span
-                     key={idx}
-                     className="text-xs font-medium px-3 py-1 rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100"
-                  >
-                     {skill}
-                  </span>
-               ))}
+               {skillLabels.length > 0 ? (
+                  skillLabels.map((skill, idx) => (
+                     <span
+                        key={idx}
+                        className="text-xs font-medium px-3 py-1 rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100"
+                     >
+                        {skill}
+                     </span>
+                  ))
+               ) : (
+                  <span className="text-xs text-slate-400">No skills listed</span>
+               )}
             </div>
          </div>
 

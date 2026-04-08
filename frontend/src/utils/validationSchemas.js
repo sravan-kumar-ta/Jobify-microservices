@@ -51,7 +51,10 @@ const JobFormValidationSchema = Yup.object().shape({
       .default(0)
       .nullable()
       .transform((value, originalValue) => (originalValue === "" ? 0 : value)),
-   skills: Yup.string().required("Please add skills for the job"),
+   skills: Yup.array()
+      .of(Yup.string().trim())
+      .min(1, "At least one skill is required")
+      .required("Skills are required"),
    description: Yup.string().required("Description is required."),
 });
 
