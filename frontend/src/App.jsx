@@ -3,7 +3,8 @@ import { AuthProvider } from "./context/AuthContext";
 // import Home from "./pages/Home";
 import NavBar from "./components/NavBar";
 import Register from "./pages/Register";
-import LoginForm from "./pages/Login";
+// import LoginForm from "./pages/Login";
+import LoginForm from "./pages/LoginForm";
 import AdminRoutes from "./routes/AdminRoutes";
 import CompanyRoutes from "./routes/CompanyRoutes";
 import JobSeekerRoutes from "./routes/JobSeekerRoutes";
@@ -18,6 +19,8 @@ function App() {
             <ConditionalNavBar>
                <Routes>
                   <Route path="/register" element={<Register />} />
+                  {/* <Route path="/login" element={<LoginForm />} /> */}
+                  {/* Only the demo-login path is shown below. The upper login path is the original one. */}
                   <Route path="/login" element={<LoginForm />} />
                   {/* <Route path="/" element={<Home />} /> */}
                   <Route path="/" element={<Home />} />

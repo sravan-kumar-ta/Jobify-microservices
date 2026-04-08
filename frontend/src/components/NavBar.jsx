@@ -75,7 +75,7 @@ const NavBar = () => {
          });
       }
    } else {
-      links.push({ href: "/signup", text: "Signup", icon: HiUser });
+      links.push({ href: "/register", text: "Signup", icon: HiUser });
       links.push({ href: "/login", text: "Login", icon: HiUser });
    }
 
