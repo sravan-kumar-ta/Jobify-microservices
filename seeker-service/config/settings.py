@@ -156,4 +156,9 @@ CORS_ALLOWED_ORIGINS = config(
     cast=Csv()
 )
 
+CSRF_TRUSTED_ORIGINS = config(
+    'CSRF_TRUSTED_ORIGINS',
+    cast=Csv()
+)
+
 INTERNAL_SERVICE_TOKEN = config("INTERNAL_SERVICE_TOKEN", "super-secret-internal-token")
