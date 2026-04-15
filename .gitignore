@@ -15,6 +15,7 @@ media
 **/migrations/*.pyc
 **/migrations/__pycache__/
 !**/migrations/*.py
+staticfiles
 
 # Django.Python Stack
 *.py[cod]

@@ -5,18 +5,48 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        VITE_API_BASE_URL: /api/
-        VITE_WEBSOCKET_URL: ws://${HOST_IP}/ws/chat/
+        VITE_API_BASE_URL: "/api/"
+        VITE_WEBSOCKET_URL: "/ws/chat/"
     ports:
       - "80:80"
     volumes:
       - static_data:/usr/share/nginx/html/static
       - media_data:/usr/share/nginx/html/media 
     depends_on:
+      - ai-service
       - auth-service
       - company-service
       - seeker-service
       - chat-service
+  
+  # AI SERVICE - WSGI
+  ai-service:
+    build:
+      context: ./ai-service
+    environment:
+      - DATABASE_URL=${AI_SERVICE_DB_URL}
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
+      - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS}
+      - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
+    env_file:
+      - ./ai-service/.env
+    volumes:  
+      - static_data:/app/staticfiles  
+    depends_on:
+      - ai-db
+
+  ai-db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: ${AI_SERVICE_DB_NAME}
+      POSTGRES_USER: ${AI_SERVICE_DB_USER}
+      POSTGRES_PASSWORD: ${AI_SERVICE_DB_PASS}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ai_data:/var/lib/postgresql/data
 
   # AUTH SERVICE - WSGI
   auth-service:
@@ -27,6 +57,7 @@ services:
       - DATABASE_URL=${AUTH_SERVICE_DB_URL}
       - DEBUG=${DEBUG}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS}
       - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
     volumes:
       - static_data:/app/staticfiles
@@ -52,6 +83,8 @@ services:
       - DEBUG=${DEBUG}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
       - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
+      - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS}
+      - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
     volumes:
       - static_data:/app/staticfiles
       - media_data:/app/media 
@@ -77,6 +110,8 @@ services:
       - DEBUG=${DEBUG}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
       - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
+      - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS}
+      - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
     volumes:
       - static_data:/app/staticfiles
     depends_on:
@@ -102,6 +137,7 @@ services:
       - DEBUG=${DEBUG}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
       - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
+      - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS}
     volumes:
       - static_data:/app/staticfiles
     depends_on:
@@ -123,6 +159,7 @@ services:
       - "6379:6379"
 
 volumes:
+  ai_data:
   auth_data:
   company_data:
   seeker_data:
