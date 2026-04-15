@@ -1,22 +1,23 @@
-asgiref==3.8.1
-black==25.1.0
-click==8.2.1
-colorama==0.4.6
-dj-database-url==3.0.1
+# Core Django Framework
 Django==5.0.7
+
+# Django Extensions / API
+djangorestframework==3.15.2
+djangorestframework-simplejwt==5.3.1
 django-cors-headers==4.4.0
 django-filter==24.3
 django-js-asset==2.2.0
-djangorestframework==3.15.2
-djangorestframework-simplejwt==5.3.1
-gunicorn>=20.0
-mypy_extensions==1.1.0
-packaging==25.0
-pathspec==0.12.1
-pillow==10.4.0
-platformdirs==4.3.8
-psycopg2==2.9.10
-PyJWT==2.9.0
+dj-database-url==3.0.1
 python-decouple==3.8
-sqlparse==0.5.0
-tzdata==2024.1
+
+# WSGI / Production Server
+gunicorn==20.1.0
+
+# Database
+psycopg==3.2.9
+
+# Media / Image Processing
+pillow==10.4.0
+
+# Code Formatting / Development Tools
+black==25.1.0
