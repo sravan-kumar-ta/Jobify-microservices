@@ -2,7 +2,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { techSkills } from "../../utils/techSkills";
+import { techSkills } from "../../utils/TechSkills";
 import InputField from "../InputField";
 import SubmitButton from "../SubmitButton";
 import { JobFormValidationSchema } from "../../utils/validationSchemas";

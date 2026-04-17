@@ -9,7 +9,7 @@ import {
    HiSparkles,
 } from "react-icons/hi";
 import ScoreRing from "./ScoreRing";
-import { techSkills } from "../../utils/techSkills";
+import { techSkills } from "../../utils/TechSkills";
 import { useGenerateJobMatches } from "../../services/AIService";
 
 const primaryCtaClass =

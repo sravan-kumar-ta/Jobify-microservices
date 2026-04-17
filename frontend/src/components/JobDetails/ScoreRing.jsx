@@ -1,4 +1,4 @@
-import { techSkills } from "../../utils/techSkills";
+import { techSkills } from "../../utils/TechSkills";
 
 const ScoreRing = ({ score }) => {
    const formatted_score = Number(score.score).toFixed(1);

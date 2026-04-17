@@ -7,7 +7,7 @@ import {
 } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
-import { techSkills } from "../utils/techSkills";
+import { techSkills } from "../utils/TechSkills";
 
 const JobCard = ({ job = null }) => {
    const excerpt = (text, length) => {

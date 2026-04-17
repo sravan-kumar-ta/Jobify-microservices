@@ -5,7 +5,7 @@ import makeAnimated from "react-select/animated";
 import { HiBriefcase, HiSparkles } from "react-icons/hi";
 import { IoCloseSharp } from "react-icons/io5";
 
-import { techSkills } from "../utils/techSkills";
+import { techSkills } from "../utils/TechSkills";
 import { JobFormValidationSchema } from "../utils/validationSchemas";
 import { useUpdateJobMutation } from "../services/companyService";
 

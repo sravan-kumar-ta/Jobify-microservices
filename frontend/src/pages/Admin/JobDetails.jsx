@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useFetchJobQuery } from "../../services/companyService";
 import { NumericFormat } from "react-number-format";
-import { techSkills } from "../../utils/techSkills";
+import { techSkills } from "../../utils/TechSkills";
 
 const JobDetails = () => {
    const { jobId } = useParams();
