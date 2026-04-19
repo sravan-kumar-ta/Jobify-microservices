@@ -8,7 +8,7 @@ def build_job_matching_metadata(job):
 
 def build_job_matching_payload(job):
     raw_skills = job.skills or ""
-    skills_list = [item.strip() for item in raw_skills.split(",")] if raw_skills else []
+    skills_list = [str(item).strip() for item in raw_skills if str(item).strip()]
 
     return {
         "job_id": job.id,
