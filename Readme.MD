@@ -6,6 +6,8 @@
 ![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-4169E1?logo=postgresql)
 ![AI](https://img.shields.io/badge/AI-Embeddings-ff69b4)
 
+## 🔗Live link 👉  [https://jobify.bond](https://jobify.bond)
+
 **Jobify** is a **microservices-based AI-powered job portal platform** built with **Django**, **Django REST Framework**, **React (Vite)**, **PostgreSQL**, **Redis**, **Docker**, and **pgvector**.
 
 Unlike a basic CRUD job portal, Jobify is designed as a **production-style backend architecture** with **independent microservices**, **isolated databases**, **AI-powered cover letter generation**, and **semantic job matching** using **embeddings + cosine similarity**.
